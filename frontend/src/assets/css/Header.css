@@ -1,0 +1,37 @@
+.header {
+  width: 100%;
+}
+
+.header__navbar {
+  padding: 1rem 0;
+}
+
+.header__logo {
+  color: #000;
+  font-family: "Courier New", Courier, monospace;
+  font-weight: 700;
+  font-size: 1.25rem;
+  margin-right: auto;
+}
+
+.header__navbar--list,
+.header__navbar {
+  display: flex;
+  align-items: center;
+}
+
+.header__navbar--list {
+  gap: 1rem;
+}
+
+.header__navbar--link {
+  font-size: 1.1rem;
+  color: #7f736c;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+
+.bookBtn {
+  background-color: #381d08;
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+}
