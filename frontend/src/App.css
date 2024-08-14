@@ -5,3 +5,11 @@
   text-decoration: none;
   list-style: none;
 }
+
+.bgBeige {
+  background-color: #f6e9e0;
+}
+
+.container {
+  padding: 0 2rem;
+}
