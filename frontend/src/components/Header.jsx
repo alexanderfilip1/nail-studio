@@ -1,10 +1,25 @@
 import React, { useState } from "react";
+import "animate.css"; // Import Animate.css
 import "../assets/css/Header.css";
 import MobileHeader from "./MobileHeader";
 import links from "../components/HeaderLinks";
 
 export default function Header() {
   const [mobileHeader, setMobileHeader] = useState(false);
+  const [animation, setAnimation] = useState("");
+
+  const toggleMobileHeader = () => {
+    if (mobileHeader) {
+      setAnimation("fadeOutUp");
+      setTimeout(() => {
+        setMobileHeader(false);
+      }, 900);
+    } else {
+      setMobileHeader(true);
+      setAnimation("fadeInDown");
+    }
+  };
+
   return (
     <header className="header bgBeige container">
       <nav className="header__navbar">
@@ -30,12 +45,7 @@ export default function Header() {
             );
           })}
         </ul>
-        <div
-          className="header__burgerMenu"
-          onClick={() => {
-            setMobileHeader(!mobileHeader);
-          }}
-        >
+        <div className="header__burgerMenu" onClick={toggleMobileHeader}>
           <svg
             width="30px"
             height="30px"
@@ -63,7 +73,11 @@ export default function Header() {
             />
           </svg>
         </div>
-        {mobileHeader && <MobileHeader />}
+        {mobileHeader && (
+          <div className={`mobileHeader ${animation}`}>
+            <MobileHeader />
+          </div>
+        )}
       </nav>
     </header>
   );
