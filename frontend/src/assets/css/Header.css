@@ -1,5 +1,6 @@
 .header {
   width: 100%;
+  position: relative;
 }
 
 .header__navbar {
@@ -34,4 +35,17 @@
   background-color: #381d08;
   padding: 0.75rem;
   border-radius: 0.75rem;
+}
+.header__burgerMenu {
+  display: none;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+  .header__navbar--list {
+    display: none;
+  }
+  .header__burgerMenu {
+    display: block;
+  }
 }
