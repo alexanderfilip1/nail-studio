@@ -1,0 +1,39 @@
+.mobileHeader {
+  position: absolute;
+  width: 100%;
+  top: 100%;
+  left: 0;
+  background-color: #d4cfc7;
+  padding: 1.5rem;
+  z-index: 1000;
+}
+
+.fadeInDown {
+  animation: fadeInDown;
+  animation-duration: 1s;
+}
+
+.fadeOutUp {
+  animation: fadeOutUp;
+  animation-duration: 1s;
+}
+
+.mobileHeader--list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  gap: 1rem;
+}
+
+@media screen and (max-width: 768px) {
+  .bookBtn {
+    background-color: transparent;
+  }
+  .header__navbar--link {
+    color: #381d08;
+  }
+  .mobileHeader {
+    display: block;
+  }
+}
