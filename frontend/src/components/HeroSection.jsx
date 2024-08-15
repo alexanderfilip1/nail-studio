@@ -6,7 +6,7 @@ export default function HeroSection() {
     <>
       <section className="hero__section container bgBeige">
         <article className="hero__section--article">
-          <div className="article__left--image fadeInDown">
+          <div className="article__left--image fadeInLeftBig">
             <picture>
               <source
                 srcSet="https://cdn-imgs.dora.run/design/IWn81g8xKUNK87Z6fevZwh.webp/w/1024/h/1024/format/webp? 1024w,
@@ -16,7 +16,6 @@ export default function HeroSection() {
                 type="image/webp"
               />
               <img
-                loading="lazy"
                 src="https://cdn-imgs.dora.run/design/IWn81g8xKUNK87Z6fevZwh.jpg"
                 alt=""
                 className="img"
@@ -43,8 +42,19 @@ export default function HeroSection() {
               Discover the Artistry of Our Talented Nail Designers. Explore
               their stunning creations and book your appointment today!
             </p>
+            <div className="article__main--actionBtns">
+              <a href="/book" className="article__bookBtn">
+                Book Appointment
+              </a>
+              <a href="/register" className="article__registerBtn">
+                Register
+              </a>
+            </div>
+            <a href="/gallery" className="article__galleryBtn">
+              View Gallery
+            </a>
           </div>
-          <div className="article__right--image">
+          <div className="article__right--image fadeInRightBig">
             <picture>
               <source
                 srcSet="https://cdn-imgs.dora.run/design/EbbT7TfzwlEJ15iioHkXzQ.webp/w/1024/h/1024/format/webp? 1024w,
@@ -54,10 +64,9 @@ export default function HeroSection() {
                 type="image/webp"
               />
               <img
-                loading="lazy"
                 src="https://cdn-imgs.dora.run/design/EbbT7TfzwlEJ15iioHkXzQ.jpg"
                 alt=""
-                className="img fadeInDown"
+                className="img"
               />
             </picture>
           </div>
