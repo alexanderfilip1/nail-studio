@@ -13,3 +13,13 @@
 .container {
   padding: 0 2rem;
 }
+
+.fadeInLeftBig {
+  animation: fadeInLeftBig;
+  animation-duration: 1.2s;
+}
+
+.fadeInRightBig {
+  animation: fadeInRightBig;
+  animation-duration: 1.2s;
+}
