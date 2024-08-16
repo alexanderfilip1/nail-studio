@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "animate.css"; // Import Animate.css
 import "../assets/css/Header.css";
 import MobileHeader from "./MobileHeader";
 import links from "../components/HeaderLinks";
 import logo from "../assets/images/logo.svg";
 
-export default function Header() {
-  const [mobileHeader, setMobileHeader] = useState(false);
+export default function Header({ mobileHeader, setMobileHeader }) {
   const [animation, setAnimation] = useState("");
+  const mobileHeaderRef = useRef(null);
 
   const toggleMobileHeader = () => {
     if (mobileHeader) {
@@ -20,6 +20,27 @@ export default function Header() {
       setAnimation("fadeInDown");
     }
   };
+
+  const handleClickOutside = (event) => {
+    if (
+      mobileHeaderRef.current &&
+      !mobileHeaderRef.current.contains(event.target)
+    ) {
+      setAnimation("fadeOutUp");
+      setTimeout(() => {
+        setMobileHeader(false);
+      }, 750);
+    }
+  };
+
+  useEffect(() => {
+    if (mobileHeader) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [mobileHeader]);
 
   return (
     <header className="header bgBeige container">
@@ -94,7 +115,7 @@ export default function Header() {
           </svg>
         </div>
         {mobileHeader && (
-          <div className={`mobileHeader ${animation}`}>
+          <div ref={mobileHeaderRef} className={`mobileHeader ${animation}`}>
             <MobileHeader />
           </div>
         )}
