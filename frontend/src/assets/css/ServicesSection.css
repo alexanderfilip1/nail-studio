@@ -51,6 +51,7 @@
   font-family: "Courier New", Courier, monospace;
   font-weight: 700;
   font-size: 1.25rem;
+  word-wrap: break-word;
 }
 
 .services__section--listItem::before {
@@ -69,7 +70,11 @@
   }
 
   .services__section--card {
-    max-width: 90%;
+    width: 45%;
+  }
+  .services__section--listItem {
+    padding-left: 1rem;
+    font-size: 1.25rem;
   }
 }
 
@@ -84,5 +89,19 @@
 
   .services__section--card {
     max-width: 100%;
+  }
+
+  .services__section--listItem {
+    padding-left: 1rem;
+    font-size: 1rem;
+  }
+  .services__section--cards {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 1rem;
+  }
+  .services__section--card {
+    width: 80%;
   }
 }
