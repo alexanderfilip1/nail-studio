@@ -3,11 +3,19 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const bodyParser = require("body-parser");
+const cors = require("cors");
+
+const corsOptions = {
+  origin: "http://localhost:5173",
+  methods: ["GET", "POST"],
+  credentials: true,
+};
 
 var fetchPrices = require("./routes/fetchPrices");
 
 var app = express();
 
+app.use(cors(corsOptions));
 app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(express.json());
