@@ -4,6 +4,7 @@ import HeroSection from "../components/HeroSection";
 import AboutSection from "../components/AboutSection";
 import ServicesSection from "../components/ServicesSection";
 import PriceListSection from "../components/PriceListSection";
+import Footer from "../components/Footer";
 export default function HomePage() {
   const [mobileHeader, setMobileHeader] = useState(false);
   return (
@@ -15,6 +16,7 @@ export default function HomePage() {
         <ServicesSection />
         <PriceListSection />
       </main>
+      <Footer />
     </>
   );
 }
