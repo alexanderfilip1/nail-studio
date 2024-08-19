@@ -24,7 +24,7 @@ export default function ServicesSection() {
           </article>
           <article className="services__section--card">
             <img src="https://unsplash.it/300/300" alt="" />
-            <ol className="services__section--list">
+            <ul className="services__section--list">
               <li className="services__section--listItem">
                 Pedichiura clasica
               </li>
@@ -38,7 +38,7 @@ export default function ServicesSection() {
               <li className="services__section--listItem">
                 Curățarea tălpilor
               </li>
-            </ol>
+            </ul>
           </article>
         </article>
       </div>
