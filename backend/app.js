@@ -12,6 +12,7 @@ const corsOptions = {
 };
 
 var fetchPrices = require("./routes/fetchPrices");
+const registerApi = require("./routes/registerApi");
 
 var app = express();
 
@@ -24,5 +25,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/api/getPrices", fetchPrices);
+app.use("/api/register", registerApi);
 
 module.exports = app;
