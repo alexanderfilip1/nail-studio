@@ -1,0 +1,25 @@
+.priceList__content {
+  padding-top: 1.5rem;
+}
+
+.priceList__title {
+  text-align: center;
+  padding-bottom: 1.5rem;
+  color: #f0ebe9;
+  font-size: 5rem;
+}
+
+.priceList__article {
+  display: flex;
+  justify-content: center;
+}
+
+.priceList__list {
+  border: 0.2rem solid #f0ebe9;
+  box-shadow: 0 0 0.5rem #f0ebe9, 0 0 1rem #f0ebe9, 0 0 1.5rem #f0ebe9,
+    0 0 2rem #f0ebe9;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  color: #fff;
+  width: 50%;
+}
