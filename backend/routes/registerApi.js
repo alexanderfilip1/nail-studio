@@ -19,7 +19,11 @@ router.post("/", validate(registerSchema), async function (req, res, next) {
       .json({ status: "success", message: "User registered successfully" });
   } catch (err) {
     console.log(err);
+    if (err.code === "ER_DUP_ENTRY") {
+      res.status(400).json({ status: "error", message: "User already exists" });
+    } else {
+      res.status(500).json({ status: "error", message: "Server error" });
+    }
   }
 });
-12;
 module.exports = router;
