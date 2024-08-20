@@ -46,7 +46,11 @@ export default function Header({ mobileHeader, setMobileHeader }) {
     <header className="header bgBeige container">
       <nav className="header__navbar">
         <a href="/" className="header__logo">
-          <img src={logo} alt="Anastasya Nails Artist logo" />
+          <img
+            src={logo}
+            className="header__logo--img"
+            alt="Anastasya Nails Artist logo"
+          />
         </a>
         <ul className="header__navbar--list">
           {links.map((item, index) => {
