@@ -11,6 +11,8 @@ export default function LoginSection() {
   const [loader, setLoader] = useState(false);
 
   const handleRegister = async () => {
+    setError();
+    setNotification();
     const loginData = {
       email: email,
       password: password,
@@ -82,7 +84,7 @@ export default function LoginSection() {
           <p className={notification ? "notification" : "hide"}>
             {notification}
           </p>
-          <AuthBtn action={"Register"} />
+          <AuthBtn action={"Login"} />
         </form>
       </section>
     </>
