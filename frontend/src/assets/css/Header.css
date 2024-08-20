@@ -1,7 +1,6 @@
 .header {
   width: 100%;
   position: relative;
-  height: 8svh;
 }
 
 .header__navbar {
@@ -9,10 +8,6 @@
 }
 
 .header__logo {
-  color: #000;
-  font-family: "Courier New", Courier, monospace;
-  font-weight: 700;
-  font-size: 1.25rem;
   margin-right: auto;
 }
 
@@ -48,6 +43,9 @@
   }
   .header__burgerMenu {
     display: block;
+  }
+  .header__logo--img {
+    width: 50%;
   }
 }
 
