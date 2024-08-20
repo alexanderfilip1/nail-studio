@@ -10,7 +10,9 @@ export default function LoginSection() {
   const [notification, setNotification] = useState("");
   const [loader, setLoader] = useState(false);
 
-  const handleRegister = async () => {
+  const handleLogin = async () => {
+    setError();
+    setNotification();
     const loginData = {
       email: email,
       password: password,
@@ -53,7 +55,7 @@ export default function LoginSection() {
           className="form"
           onSubmit={(e) => {
             e.preventDefault();
-            handleRegister();
+            handleLogin();
           }}
         >
           <label htmlFor="email">
@@ -82,7 +84,7 @@ export default function LoginSection() {
           <p className={notification ? "notification" : "hide"}>
             {notification}
           </p>
-          <AuthBtn action={"Register"} />
+          <AuthBtn action={"Login"} />
         </form>
       </section>
     </>
