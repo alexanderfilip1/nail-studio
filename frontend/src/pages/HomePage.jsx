@@ -5,6 +5,7 @@ import AboutSection from "../components/AboutSection";
 import ServicesSection from "../components/ServicesSection";
 import PriceListSection from "../components/PriceListSection";
 import Footer from "../components/Footer";
+import FAQSection from "../components/FAQSection";
 export default function HomePage() {
   const [mobileHeader, setMobileHeader] = useState(false);
   return (
@@ -15,6 +16,7 @@ export default function HomePage() {
         <AboutSection />
         <ServicesSection />
         <PriceListSection />
+        <FAQSection />
       </main>
       <Footer />
     </>

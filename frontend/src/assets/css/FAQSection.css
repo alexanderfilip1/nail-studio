@@ -1,0 +1,29 @@
+.faq__section {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 1.5rem 2rem;
+}
+
+.hide {
+  display: none;
+}
+
+.show {
+  display: inline;
+}
+
+.faq__article {
+  background-color: #fff;
+  padding: 1rem;
+  margin: 0.5rem;
+  border-radius: 1rem;
+}
+
+.faq__section--title {
+  text-align: center;
+  font-size: 4rem;
+  color: #381d08;
+  padding-bottom: 1.5rem;
+}
