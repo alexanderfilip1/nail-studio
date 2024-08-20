@@ -1,6 +1,7 @@
 .header {
   width: 100%;
   position: relative;
+  height: 8svh;
 }
 
 .header__navbar {
