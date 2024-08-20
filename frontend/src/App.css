@@ -36,3 +36,14 @@
 .blur {
   filter: blur(0.5rem);
 }
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main,
+.auth {
+  flex-grow: 1;
+}

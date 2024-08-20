@@ -8,7 +8,7 @@ export default function Appointment() {
   return (
     <>
       <Header mobileHeader={mobileHeader} setMobileHeader={setMobileHeader} />
-      <main className={mobileHeader ? "main blur" : "main"}>
+      <main className={mobileHeader ? "main blur" : "main bgBeige"}>
         <AppointmentSection />
       </main>
       <Footer />
