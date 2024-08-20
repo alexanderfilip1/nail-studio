@@ -10,16 +10,14 @@ import Appointment from "./pages/Appointment";
 function App() {
   return (
     <>
-      <div className="wrapper">
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/book" element={<Appointment />} />
-          </Routes>
-        </BrowserRouter>
-      </div>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/book" element={<Appointment />} />
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }
