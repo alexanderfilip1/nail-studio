@@ -16,9 +16,8 @@ export default function RegisterSection() {
     try {
       const req = await fetch("http://localhost:3000/api/register", {
         method: "POST",
-        headers: {"content-type": "application/json"}
+        headers: { "content-type": "application/json" },
         body: JSON.stringify(registerData),
-        
       });
       const body = await req.json();
       console.log(body);
