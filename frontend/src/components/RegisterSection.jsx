@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import "../assets/css/Register.css";
 import AuthBtn from "./AuthBtn";
+import Loader from "./Loader";
 
 export default function RegisterSection() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [notification, setNotification] = useState("");
+  const [loader, setLoader] = useState(false);
 
   const handleRegister = async () => {
     const registerData = {
@@ -14,6 +18,7 @@ export default function RegisterSection() {
       password: password,
     };
     try {
+      setLoader(true);
       const req = await fetch("http://localhost:3000/api/register", {
         method: "POST",
         headers: { "content-type": "application/json" },
@@ -21,12 +26,30 @@ export default function RegisterSection() {
       });
       const body = await req.json();
       console.log(body);
+      switch (body.status) {
+        case "success":
+          setNotification(body.message);
+          setError("");
+          break;
+        case "error":
+          setError(body.message);
+          break;
+        default:
+          setError("Unexpected response from the server.");
+      }
     } catch (err) {
-      console.log(err);
+      setError("An error occurred while registering.");
+      console.error(err);
+    } finally {
+      setTimeout(() => {
+        setLoader(false);
+      }, 1500);
     }
   };
+
   return (
     <>
+      {loader && <Loader />}
       <section className="register__section">
         <form
           className="form"
@@ -59,7 +82,7 @@ export default function RegisterSection() {
           </label>
           <label htmlFor="password">
             <input
-              type="text"
+              type="password"
               placeholder="Password"
               id="password"
               className="input"
@@ -68,6 +91,10 @@ export default function RegisterSection() {
               }}
             />
           </label>
+          <p className={error ? "error" : "hide"}>{error}</p>
+          <p className={notification ? "notification" : "hide"}>
+            {notification}
+          </p>
           <AuthBtn action={"Register"} />
         </form>
       </section>
