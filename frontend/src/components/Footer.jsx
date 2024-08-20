@@ -5,7 +5,7 @@ import "../assets/css/Footer.css";
 
 export default function Footer() {
   return (
-    <footer className="footer container">
+    <footer className="footer container bgBrown">
       <section className="footer__section">
         <img src={logo} alt="Manicure logo" className="footer__logo" />
         <nav className="footer__navbar">
@@ -37,7 +37,7 @@ export default function Footer() {
       </section>
       <section className="footer__bottom">
         <p className="footer__copy">
-          &copy; 2024 Your Company Name. All rights reserved.
+          &copy; 2024 Anastasya Beauty. All rights reserved.
         </p>
       </section>
     </footer>
