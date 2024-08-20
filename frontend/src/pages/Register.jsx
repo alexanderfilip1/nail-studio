@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Header from "../components/Header";
 import RegisterSection from "../components/RegisterSection";
-export default function SignInPage() {
+export default function Register() {
   const [mobileHeader, setMobileHeader] = useState(false);
   return (
     <>
