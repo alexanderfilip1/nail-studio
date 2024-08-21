@@ -6,7 +6,9 @@ export default function Register() {
   return (
     <>
       <Header mobileHeader={mobileHeader} setMobileHeader={setMobileHeader} />
-      <main className={mobileHeader ? "auth blur" : "auth"}>
+      <main
+        className={mobileHeader ? "auth bgGradient blur" : "auth bgGradient"}
+      >
         <RegisterSection />
       </main>
     </>
