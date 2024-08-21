@@ -14,6 +14,7 @@ const corsOptions = {
 var fetchPrices = require("./routes/fetchPrices");
 const registerApi = require("./routes/registerApi");
 const loginApi = require("./routes/loginApi");
+const scheduleAppointment = require("./routes/scheduleAppointment");
 
 var app = express();
 
@@ -28,5 +29,6 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/api/getPrices", fetchPrices);
 app.use("/api/register", registerApi);
 app.use("/api/login", loginApi);
+app.use("/api/createAppointment", scheduleAppointment);
 
 module.exports = app;
