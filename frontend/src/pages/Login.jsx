@@ -6,7 +6,11 @@ export default function Login() {
   return (
     <>
       <Header mobileHeader={mobileHeader} setMobileHeader={setMobileHeader} />
-      <main className={mobileHeader ? "auth blur" : "auth"}>
+      <main
+        className={
+          mobileHeader ? "auth bgGradient blur bgGradient" : "auth bgGradient"
+        }
+      >
         <LoginSection />
       </main>
     </>
