@@ -4,10 +4,12 @@ const db = require("../config/db");
 
 router.post("/", async function (req, res, next) {
   const { name, phone, date, service } = req.body;
-  console.log(service);
+  const dateObj = new Date(date);
+  const hour = dateObj.getHours();
   let lastTime;
   let totalTime = 0;
   try {
+    console.log(date[0]);
     const [result] = await db.query(
       "INSERT INTO appointments (name, phone, start_datetime, end_datetime) VALUES (?, ?, ?, ?)",
       [name, phone, date, date]
@@ -36,6 +38,9 @@ router.post("/", async function (req, res, next) {
         );
       })
     );
+
+    const timeInHours = totalTime / 60;
+    console.log(timeInHours + hour);
 
     console.log(`Total Time for All Services: ${totalTime}`);
 
