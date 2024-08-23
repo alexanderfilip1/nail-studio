@@ -250,6 +250,12 @@
     padding: 1rem;
   }
 
+  .step {
+    min-width: 90%;
+    padding: 1rem;
+    border-radius: 3rem;
+  }
+
   .time-picker-container {
     align-items: center;
   }
@@ -272,5 +278,10 @@
   .price-list__name,
   .price-list__price {
     font-size: 1rem;
+  }
+  .step {
+    min-width: 90%;
+    padding: 1rem;
+    border-radius: 3rem;
   }
 }
