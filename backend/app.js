@@ -15,7 +15,11 @@ var fetchPrices = require("./routes/fetchPrices");
 const registerApi = require("./routes/registerApi");
 const loginApi = require("./routes/loginApi");
 const scheduleAppointment = require("./routes/scheduleAppointment");
+
 const getUnavailableSlots = require("./routes/getUnavailableSlots");
+
+const authToken = require("./routes/authToken");
+
 
 var app = express();
 
@@ -32,5 +36,7 @@ app.use("/api/register", registerApi);
 app.use("/api/login", loginApi);
 app.use("/api/createAppointment", scheduleAppointment);
 app.use("/api/getUnavailableSlots", getUnavailableSlots);
+app.use("/api/verifyToken", authToken);
+
 
 module.exports = app;

@@ -48,7 +48,10 @@ router.post("/", async function (req, res, next) {
     ]);
     console.log(resultTime);
 
-    res.status(201).json("Success");
+    res.status(201).json({
+      status: "success",
+      message: `Your booking has been successfully registered on date ${fullDate} and finish ${endTime}`,
+    });
   } catch (err) {
     console.log(err);
     res.status(500).json("Error occurred");

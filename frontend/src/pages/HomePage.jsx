@@ -6,8 +6,15 @@ import ServicesSection from "../components/ServicesSection";
 import PriceListSection from "../components/PriceListSection";
 import Footer from "../components/Footer";
 import FAQSection from "../components/FAQSection";
+import useAuthToken from "../hooks/useAuthToken.jsx";
+
 export default function HomePage() {
   const [mobileHeader, setMobileHeader] = useState(false);
+
+  const authStatus = useAuthToken();
+
+  console.log(authStatus);
+
   return (
     <>
       <Header mobileHeader={mobileHeader} setMobileHeader={setMobileHeader} />
