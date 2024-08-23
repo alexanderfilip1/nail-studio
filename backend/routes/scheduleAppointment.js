@@ -1,18 +1,18 @@
 var express = require("express");
 var router = express.Router();
 const db = require("../config/db");
+const calculateAppointmentTime = require("../middlewares/calculateAppointmentTime");
 
 router.post("/", async function (req, res, next) {
-  const { name, phone, date, service } = req.body;
-  const dateObj = new Date(date);
-  const hour = dateObj.getHours();
+  const { name, phone, date, time, service } = req.body;
   let lastTime;
   let totalTime = 0;
   try {
     console.log(date[0]);
+    const fullDate = `${date} ${time}`;
     const [result] = await db.query(
       "INSERT INTO appointments (name, phone, start_datetime, end_datetime) VALUES (?, ?, ?, ?)",
-      [name, phone, date, date]
+      [name, phone, fullDate, fullDate]
     );
     const appointmentId = result.insertId;
 
@@ -39,10 +39,14 @@ router.post("/", async function (req, res, next) {
       })
     );
 
-    const timeInHours = totalTime / 60;
-    console.log(timeInHours + hour);
-
-    console.log(`Total Time for All Services: ${totalTime}`);
+    const resultTime = calculateAppointmentTime(time, totalTime);
+    const endTime = `${date} ${resultTime}`;
+    console.log(endTime);
+    await db.query("UPDATE appointments SET end_datetime = ? WHERE id = ?", [
+      endTime,
+      appointmentId,
+    ]);
+    console.log(resultTime);
 
     res.status(201).json("Success");
   } catch (err) {
