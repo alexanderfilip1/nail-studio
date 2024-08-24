@@ -17,6 +17,7 @@ export default function AppointmentSection() {
   const [loader, setLoader] = useState(false);
   const [notification, setNotification] = useState("");
   const [finishAppointment, setFinishAppointment] = useState(false);
+  const [unavailableSlots, setUnavailableSlots] = useState([]);
 
   const PriceList = ({ title, prices, categoryId }) => {
     const filteredPrices = prices.filter(
@@ -80,6 +81,26 @@ export default function AppointmentSection() {
     getPrices();
   }, []);
 
+  useEffect(() => {
+    const getUnavailableSlots = async () => {
+      try {
+        const req = await fetch(
+          `http://localhost:3000/api/getUnavailableSlots?date=${
+            date.toLocaleDateString().split("T")[0]
+          }`
+        );
+        const body = await req.json();
+        console.log(body);
+        setUnavailableSlots(body);
+      } catch (err) {
+        setError(err);
+        console.error(err);
+      }
+    };
+
+    getUnavailableSlots();
+  }, [date]);
+
   const calculateTotalPrice = () => {
     return services.reduce((total, service) => {
       const price = prices.find((item) => item.name === service)?.price || 0;
@@ -130,10 +151,22 @@ export default function AppointmentSection() {
     }
   };
 
+  const isSlotUnavailable = (hour, minute) => {
+    const selectedSlot = new Date(date);
+    selectedSlot.setHours(hour);
+    selectedSlot.setMinutes(minute);
+
+    return unavailableSlots.some((slot) => {
+      const start = new Date(slot.start);
+      const end = new Date(slot.end);
+      return selectedSlot >= start && selectedSlot < end;
+    });
+  };
+
   const registerAppointment = async () => {
     setLoader(true);
     const formattedTime = `${hour}:${minute}`;
-    const formattedDate = date.toISOString().split("T")[0];
+    const formattedDate = date.toLocaleDateString().split("T")[0];
     const appointmentData = {
       name: clientName,
       phone: clientPhone,
@@ -169,10 +202,10 @@ export default function AppointmentSection() {
 
   useEffect(() => {
     setError();
-  }, [services]);
+  }, [date]);
+
   return (
     <>
-      {" "}
       {loader && <Loader />}
       <section className="appointment__section container">
         <h1 className="appointment__section--title">Booking</h1>
@@ -198,8 +231,10 @@ export default function AppointmentSection() {
                         key={h}
                         className={`picker-item ${
                           h === hour ? "selected" : ""
-                        }`}
-                        onClick={() => setHour(h)}
+                        } ${isSlotUnavailable(h, minute) ? "unavailable" : ""}`}
+                        onClick={() =>
+                          !isSlotUnavailable(h, minute) && setHour(h)
+                        }
                       >
                         {h}
                       </div>
@@ -213,8 +248,10 @@ export default function AppointmentSection() {
                         key={m}
                         className={`picker-item ${
                           m === minute ? "selected" : ""
-                        }`}
-                        onClick={() => setMinute(m)}
+                        } ${isSlotUnavailable(hour, m) ? "unavailable" : ""}`}
+                        onClick={() =>
+                          !isSlotUnavailable(hour, m) && setMinute(m)
+                        }
                       >
                         {m}
                       </div>
