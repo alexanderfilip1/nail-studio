@@ -5,8 +5,10 @@ const db = require("../config/db");
 router.get("/", async (req, res) => {
   const { date } = req.query;
 
-  const startDate = new Date(date);
-  const endDate = new Date(date);
+  const [day, month, year] = date.split("/");
+  const parsedDate = new Date(`${year}-${month}-${day}T00:00:00`);
+  const startDate = new Date(parsedDate);
+  const endDate = new Date(parsedDate);
   endDate.setDate(endDate.getDate() + 1);
 
   const query = `
