@@ -18,6 +18,11 @@ router.post("/", async function (req, res, next) {
       [name, phone, userID, fullDate, fullDate]
     );
 
+    await db.query(
+      "UPDATE users SET appointments = appointments + 1 WHERE id = ?",
+      [userID]
+    );
+
     const appointmentId = result.insertId;
 
     await Promise.all(
