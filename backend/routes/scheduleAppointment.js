@@ -4,7 +4,7 @@ const db = require("../config/db");
 const calculateAppointmentTime = require("../middlewares/calculateAppointmentTime");
 
 router.post("/", async function (req, res, next) {
-  const { name, phone, date, time, service } = req.body;
+  const { name, phone, date, time, service, userID } = req.body;
   let lastTime;
   let totalTime = 0;
 
@@ -14,8 +14,8 @@ router.post("/", async function (req, res, next) {
     const fullDate = `${formattedDate} ${time}:00`;
 
     const [result] = await db.query(
-      "INSERT INTO appointments (name, phone, start_datetime, end_datetime) VALUES (?, ?, ?, ?)",
-      [name, phone, fullDate, fullDate]
+      "INSERT INTO appointments (name, phone, user_id, start_datetime,  end_datetime) VALUES (?, ?, ?, ?, ?)",
+      [name, phone, userID, fullDate, fullDate]
     );
 
     const appointmentId = result.insertId;
