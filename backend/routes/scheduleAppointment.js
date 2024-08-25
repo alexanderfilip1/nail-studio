@@ -4,22 +4,24 @@ const db = require("../config/db");
 const calculateAppointmentTime = require("../middlewares/calculateAppointmentTime");
 
 router.post("/", async function (req, res, next) {
-  const { name, phone, date, time, service } = req.body;
+  const { name, phone, date, time, service, userID } = req.body;
   let lastTime;
   let totalTime = 0;
+
   try {
-    console.log(date[0]);
-    const fullDate = `${date} ${time}`;
+    const [day, month, year] = date.split("/");
+    const formattedDate = `${year}-${month}-${day}`;
+    const fullDate = `${formattedDate} ${time}:00`;
+
     const [result] = await db.query(
-      "INSERT INTO appointments (name, phone, start_datetime, end_datetime) VALUES (?, ?, ?, ?)",
-      [name, phone, fullDate, fullDate]
+      "INSERT INTO appointments (name, phone, user_id, start_datetime,  end_datetime) VALUES (?, ?, ?, ?, ?)",
+      [name, phone, userID, fullDate, fullDate]
     );
+
     const appointmentId = result.insertId;
 
     await Promise.all(
       service.map(async (item) => {
-        console.log(item);
-
         const [id] = await db.query("SELECT id FROM prices WHERE name = ?", [
           item,
         ]);
@@ -40,13 +42,12 @@ router.post("/", async function (req, res, next) {
     );
 
     const resultTime = calculateAppointmentTime(time, totalTime);
-    const endTime = `${date} ${resultTime}`;
-    console.log(endTime);
+    const endTime = `${formattedDate} ${resultTime}`;
+
     await db.query("UPDATE appointments SET end_datetime = ? WHERE id = ?", [
       endTime,
       appointmentId,
     ]);
-    console.log(resultTime);
 
     res.status(201).json({
       status: "success",
