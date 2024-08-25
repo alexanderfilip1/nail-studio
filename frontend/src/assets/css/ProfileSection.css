@@ -12,3 +12,18 @@
   align-items: center;
   flex-grow: 1;
 }
+
+.profile__info {
+  gap: 1rem;
+  border: 0.1rem solid #fff;
+  border-radius: 1rem;
+  box-shadow: 10px 10px 5px 0px rgba(56, 29, 8, 0.75);
+  -webkit-box-shadow: 10px 10px 5px 0px rgba(56, 29, 8, 0.75);
+  -moz-box-shadow: 10px 10px 5px 0px rgba(56, 29, 8, 0.75);
+  padding: 2rem;
+}
+
+.profile__section--title {
+  text-align: center;
+  margin: 1.5rem 0;
+}
