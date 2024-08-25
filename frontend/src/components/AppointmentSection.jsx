@@ -3,11 +3,12 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "../assets/css/AppointmentSection.css";
 import Loader from "../components/Loader";
+import useAuthToken from "../hooks/useAuthToken.jsx";
 
 export default function AppointmentSection() {
   const [date, setDate] = useState(new Date());
-  const [hour, setHour] = useState("08");
-  const [minute, setMinute] = useState("00");
+  const [hour, setHour] = useState("");
+  const [minute, setMinute] = useState("");
   const [services, setServices] = useState([]);
   const [prices, setPrices] = useState([]);
   const [error, setError] = useState(null);
@@ -18,6 +19,7 @@ export default function AppointmentSection() {
   const [notification, setNotification] = useState("");
   const [finishAppointment, setFinishAppointment] = useState(false);
   const [unavailableSlots, setUnavailableSlots] = useState([]);
+  const [userID, setUserID] = useState(0);
 
   const PriceList = ({ title, prices, categoryId }) => {
     const filteredPrices = prices.filter(
@@ -173,6 +175,7 @@ export default function AppointmentSection() {
       date: formattedDate,
       time: formattedTime,
       service: services,
+      userID: userID,
     };
     console.log(appointmentData);
     try {
@@ -200,6 +203,22 @@ export default function AppointmentSection() {
     }
   };
 
+  const authStatus = useAuthToken();
+
+  useEffect(() => {
+    if (authStatus === null) {
+      return;
+    }
+
+    if (authStatus.status === true && authStatus.user) {
+      console.log(authStatus.user.id);
+      setUserID(authStatus.user.id);
+    } else if (authStatus.status === false) {
+      console.log("User is not authenticated");
+    } else if (authStatus.status === "error") {
+      console.error("Error verifying authentication");
+    }
+  }, [authStatus]);
   useEffect(() => {
     setError();
   }, [date]);
