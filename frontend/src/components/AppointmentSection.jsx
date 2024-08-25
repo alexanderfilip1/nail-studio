@@ -20,6 +20,7 @@ export default function AppointmentSection() {
   const [finishAppointment, setFinishAppointment] = useState(false);
   const [unavailableSlots, setUnavailableSlots] = useState([]);
   const [userID, setUserID] = useState(0);
+  const [cashback, setCashback] = useState(0);
 
   const PriceList = ({ title, prices, categoryId }) => {
     const filteredPrices = prices.filter(
@@ -110,6 +111,8 @@ export default function AppointmentSection() {
     }, 0);
   };
 
+  const totalPrice = calculateTotalPrice();
+
   const serviceSummary = () => {
     return (
       <div className="summary">
@@ -124,6 +127,7 @@ export default function AppointmentSection() {
         {services.length > 0 && (
           <div className="summary-total">
             Total Price: {calculateTotalPrice()} LEI
+            <h4> {authStatus.status ? `Cashback: ${cashback} LEI` : ""}</h4>
           </div>
         )}
       </div>
@@ -222,6 +226,15 @@ export default function AppointmentSection() {
   useEffect(() => {
     setError();
   }, [date]);
+
+  useEffect(() => {
+    if (authStatus === null) {
+      return;
+    }
+    if (authStatus.status === true) {
+      setCashback(Math.round(totalPrice / 10));
+    }
+  }, [authStatus, totalPrice]);
 
   return (
     <>
