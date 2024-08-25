@@ -12,9 +12,9 @@ const useAuthToken = () => {
         });
         const result = await response.json();
         if (result.message === "authenticated") {
-          setAuthStatus({ status: "authenticated", user: result.user });
+          setAuthStatus({ status: true, user: result.user });
         } else {
-          setAuthStatus({ status: "notAuthenticated" });
+          setAuthStatus({ status: false });
         }
       } catch (err) {
         console.error("Error verifying authentication", err);
