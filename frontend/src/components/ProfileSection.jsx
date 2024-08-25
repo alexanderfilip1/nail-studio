@@ -36,6 +36,8 @@ export default function ProfileSection() {
     if (authStatus !== null) {
       console.log(authStatus);
       getUserProfile(authStatus.user.email);
+    } else {
+      return;
     }
   }, [authStatus]);
 
@@ -48,13 +50,26 @@ export default function ProfileSection() {
               Welcome,
               <span className="username"> {profile.username}</span>!
             </h2>
-            <div className="profile__info"></div>
+            <div className="profile__info">
+              <p>
+                <strong>Username:</strong> {profile.username}
+              </p>
+              <p>
+                <strong>Cashback Balance:</strong> {profile.balance.toFixed(2)}
+              </p>
+              <p>
+                <strong>Appointments:</strong> {profile.appointments}
+              </p>
+              <p>
+                <strong>Phone Number:</strong> {profile.phone}
+              </p>
+            </div>
           </>
         ) : (
           <div className="notLoggedIn">You are not logged in.</div>
         )
       ) : (
-        <div>Loading...</div>
+        <div className="loading">Loading...</div>
       )}
     </section>
   );
