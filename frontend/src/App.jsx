@@ -6,6 +6,7 @@ import "animate.css";
 import "./App.css";
 import Login from "./pages/Login";
 import Appointment from "./pages/Appointment";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/book" element={<Appointment />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </BrowserRouter>
     </>
