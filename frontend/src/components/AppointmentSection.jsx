@@ -191,10 +191,14 @@ export default function AppointmentSection() {
       } else {
         setError(body.message);
       }
-      setLoader(false);
+      setTimeout(() => {
+        setLoader(false);
+      }, 1500);
     } catch (err) {
       console.error(err);
-      setLoader(false);
+      setTimeout(() => {
+        setLoader(false);
+      }, 1500);
     }
   };
 
@@ -233,7 +237,10 @@ export default function AppointmentSection() {
     if (authStatus === null) {
       return;
     }
+
     if (authStatus.status === true && userBalance > 0) {
+      const effectiveCashback =
+        totalPrice <= userBalance ? totalPrice : userBalance;
       return (
         <label>
           <input
@@ -243,7 +250,7 @@ export default function AppointmentSection() {
             checked={cashbackUse}
             onChange={() => setCashbackUse(!cashbackUse)}
           />
-          USE {userBalance} LEI from your cashback towards your balance
+          {`USE ${effectiveCashback} LEI from your cashback towards your balance`}
         </label>
       );
     }
