@@ -19,6 +19,7 @@ const getUnavailableSlots = require("./routes/getUnavailableSlots");
 const authToken = require("./routes/authToken");
 const userProfile = require("./routes/userProfile");
 const fetchUserAppointments = require("./routes/fetchUserAppointments");
+const cashbackHistory = require("./routes/cashbackHistory");
 
 var app = express();
 
@@ -38,5 +39,6 @@ app.use("/api/getUnavailableSlots", getUnavailableSlots);
 app.use("/api/verifyToken", authToken);
 app.use("/api/getUser", userProfile);
 app.use("/api/fetchAppointments", fetchUserAppointments);
+app.use("/api/cashbackHistory", cashbackHistory);
 
 module.exports = app;
