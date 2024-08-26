@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import useAuthToken from "../hooks/useAuthToken.jsx";
 import "../assets/css/ProfileSection.css";
+import { getUserProfile } from "../services/userProfileService";
 
 export default function ProfileSection() {
   const authStatus = useAuthToken();
@@ -11,34 +12,22 @@ export default function ProfileSection() {
     phone: "",
   });
 
-  const getUserProfile = async (email) => {
-    try {
-      const req = await fetch("http://localhost:3000/api/getUser", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
-      const body = await req.json();
-      console.log(body);
-
+  const getUserData = async () => {
+    if (authStatus !== null) {
+      const user = await getUserProfile(authStatus.user.email);
       setProfile({
-        username: body.username,
-        balance: body.balance,
-        appointments: body.appointments,
-        phone: body.phone,
+        username: user.username,
+        balance: user.balance,
+        appointments: user.appointments,
+        phone: user.phone,
       });
-    } catch (err) {
-      console.log(err);
+    } else {
+      return;
     }
   };
 
   useEffect(() => {
-    if (authStatus !== null) {
-      console.log(authStatus);
-      getUserProfile(authStatus.user.email);
-    } else {
-      return;
-    }
+    getUserData();
   }, [authStatus]);
 
   return (
@@ -63,6 +52,10 @@ export default function ProfileSection() {
               <p>
                 <strong>Phone Number:</strong> {profile.phone}
               </p>
+            </div>
+            <div className="action__buttons">
+              <button className="btn">Show Appointments</button>
+              <button className="btn">See Cashback History</button>
             </div>
           </>
         ) : (
