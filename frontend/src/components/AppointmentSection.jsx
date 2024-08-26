@@ -4,6 +4,7 @@ import "react-calendar/dist/Calendar.css";
 import "../assets/css/AppointmentSection.css";
 import Loader from "../components/Loader";
 import useAuthToken from "../hooks/useAuthToken.jsx";
+import { getUserProfile } from "../services/userProfileService";
 
 export default function AppointmentSection() {
   const [date, setDate] = useState(new Date());
@@ -21,6 +22,8 @@ export default function AppointmentSection() {
   const [unavailableSlots, setUnavailableSlots] = useState([]);
   const [userID, setUserID] = useState(0);
   const [cashback, setCashback] = useState(0);
+  const [cashbackUse, setCashbackUse] = useState(false);
+  const [userBalance, setUserBalance] = useState(0);
 
   const PriceList = ({ title, prices, categoryId }) => {
     const filteredPrices = prices.filter(
@@ -93,7 +96,6 @@ export default function AppointmentSection() {
           }`
         );
         const body = await req.json();
-        console.log(body);
         setUnavailableSlots(body);
       } catch (err) {
         setError(err);
@@ -105,34 +107,20 @@ export default function AppointmentSection() {
   }, [date]);
 
   const calculateTotalPrice = () => {
-    return services.reduce((total, service) => {
+    let totalPrice = services.reduce((total, service) => {
       const price = prices.find((item) => item.name === service)?.price || 0;
       return total + parseFloat(price);
     }, 0);
+
+    if (cashbackUse) {
+      // Apply cashback if it's enabled and the user has enough balance
+      totalPrice = Math.max(totalPrice - userBalance, 0);
+    }
+
+    return totalPrice;
   };
 
   const totalPrice = calculateTotalPrice();
-
-  const serviceSummary = () => {
-    return (
-      <div className="summary">
-        <h3>Selected Services:</h3>
-        <ul>
-          {services.length > 0 ? (
-            services.map((service, index) => <li key={index}>{service}</li>)
-          ) : (
-            <p>No services selected</p>
-          )}
-        </ul>
-        {services.length > 0 && (
-          <div className="summary-total">
-            Total Price: {calculateTotalPrice()} LEI
-            <h4> {authStatus.status ? `Cashback: ${cashback} LEI` : ""}</h4>
-          </div>
-        )}
-      </div>
-    );
-  };
 
   const handleContinue = () => {
     if (currentStep === 1) {
@@ -173,6 +161,12 @@ export default function AppointmentSection() {
     setLoader(true);
     const formattedTime = `${hour}:${minute}`;
     const formattedDate = date.toLocaleDateString().split("T")[0];
+
+    const finalPrice = calculateTotalPrice();
+    const cashbackUsed = cashbackUse
+      ? Math.min(finalPrice + userBalance, userBalance)
+      : 0;
+
     const appointmentData = {
       name: clientName,
       phone: clientPhone,
@@ -180,9 +174,9 @@ export default function AppointmentSection() {
       time: formattedTime,
       service: services,
       userID: userID,
-      cashback: cashback,
+      cashback: cashbackUsed,
     };
-    console.log(appointmentData);
+
     try {
       const req = await fetch("http://localhost:3000/api/createAppointment", {
         method: "POST",
@@ -190,25 +184,26 @@ export default function AppointmentSection() {
         body: JSON.stringify(appointmentData),
       });
       const body = await req.json();
-      console.log(body);
       if (body.status === "success") {
-        setTimeout(() => {
-          setLoader(false);
-        }, 1500);
         setNotification(body.message);
         setFinishAppointment(true);
+        setUserBalance((prevBalance) => prevBalance - cashbackUsed);
       } else {
-        setTimeout(() => {
-          setLoader(false);
-        }, 1500);
         setError(body.message);
       }
+      setLoader(false);
     } catch (err) {
-      console.log(err);
+      console.error(err);
+      setLoader(false);
     }
   };
 
   const authStatus = useAuthToken();
+
+  const getUserBalance = async (email) => {
+    const { balance } = await getUserProfile(email);
+    setUserBalance(balance);
+  };
 
   useEffect(() => {
     if (authStatus === null) {
@@ -216,7 +211,7 @@ export default function AppointmentSection() {
     }
 
     if (authStatus.status === true && authStatus.user) {
-      console.log(authStatus.user.id);
+      getUserBalance(authStatus.user.email);
       setUserID(authStatus.user.id);
     } else if (authStatus.status === false) {
       console.log("User is not authenticated");
@@ -224,9 +219,6 @@ export default function AppointmentSection() {
       console.error("Error verifying authentication");
     }
   }, [authStatus]);
-  useEffect(() => {
-    setError();
-  }, [date]);
 
   useEffect(() => {
     if (authStatus === null) {
@@ -236,6 +228,26 @@ export default function AppointmentSection() {
       setCashback(Math.round(totalPrice / 10));
     }
   }, [authStatus, totalPrice]);
+
+  const showUserCashback = () => {
+    if (authStatus === null) {
+      return;
+    }
+    if (authStatus.status === true && userBalance > 0) {
+      return (
+        <label>
+          <input
+            type="checkbox"
+            name="cashback"
+            id="cashback"
+            checked={cashbackUse}
+            onChange={() => setCashbackUse(!cashbackUse)}
+          />
+          USE {userBalance} LEI from your cashback towards your balance
+        </label>
+      );
+    }
+  };
 
   return (
     <>
@@ -310,7 +322,7 @@ export default function AppointmentSection() {
                   Total Price: {calculateTotalPrice()} LEI
                 </div>
                 <p className="error-message">{error}</p>
-
+                {showUserCashback()}
                 <div className="navigation-buttons">
                   <button onClick={handleBack}>Back</button>
                   <button onClick={handleContinue}>Continue</button>
@@ -343,7 +355,26 @@ export default function AppointmentSection() {
                 />
               </label>
             </div>
-            {serviceSummary()}
+            <div className="summary">
+              <h3>Selected Services:</h3>
+              <ul>
+                {services.length > 0 ? (
+                  services.map((service, index) => (
+                    <li key={index}>{service}</li>
+                  ))
+                ) : (
+                  <p>No services selected</p>
+                )}
+              </ul>
+              {services.length > 0 && (
+                <div className="summary-total">
+                  Total Price: {totalPrice} LEI
+                  {cashbackUse && (
+                    <h4> Cashback: {Math.min(cashback, totalPrice)} LEI</h4>
+                  )}
+                </div>
+              )}
+            </div>
             <p className="error-message">{error}</p>
             <p className="notification">{notification}</p>
             <div className="navigation-buttons">
