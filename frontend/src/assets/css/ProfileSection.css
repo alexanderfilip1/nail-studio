@@ -88,3 +88,13 @@
     margin-bottom: 0.5rem;
   }
 }
+
+.action__buttons {
+  width: 100%;
+  display: flex;
+  gap: 4%;
+}
+
+.action__buttons .btn {
+  width: 48%;
+}
