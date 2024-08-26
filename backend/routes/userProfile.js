@@ -11,8 +11,9 @@ router.post("/", async (req, res) => {
     ]);
     console.log(user[0]);
     if (user[0]) {
-      const { username, balance, appointments, phone } = user[0];
+      const { id, username, balance, appointments, phone } = user[0];
       const userData = {
+        id: id,
         username: username,
         balance: balance,
         appointments: appointments,
