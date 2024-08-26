@@ -78,7 +78,12 @@ router.post("/", async function (req, res, next) {
       endTime,
       appointmentId,
     ]);
-
+    if (user.phone === "0") {
+      await db.query("UPDATE users SET phone = ? WHERE id = ?", [
+        phone,
+        userID,
+      ]);
+    }
     res.status(201).json({
       status: "success",
       message: `Your booking has been successfully registered on date ${fullDate} and finishes at ${endTime}`,
