@@ -13,32 +13,57 @@ router.post("/", async function (req, res, next) {
     const formattedDate = `${year}-${month}-${day}`;
     const fullDate = `${formattedDate} ${time}:00`;
 
+    const [[user]] = await db.query("SELECT balance FROM users WHERE id = ?", [
+      userID,
+    ]);
+
+    const servicePrices = await Promise.all(
+      service.map(async (item) => {
+        const [priceData] = await db.query(
+          "SELECT price, required_time FROM prices WHERE name = ?",
+          [item]
+        );
+        if (priceData.length === 0) {
+          throw new Error(`Service ${item} not found`);
+        }
+        lastTime = priceData[0].required_time;
+        totalTime += +lastTime;
+        return priceData[0].price;
+      })
+    );
+
+    const totalPrice = servicePrices.reduce((acc, price) => acc + price, 0);
+
+    const cashbackAvailable = user.balance;
+    const cashbackUsed = Math.min(cashbackAvailable, totalPrice);
+    const finalPrice = totalPrice - cashbackUsed;
+
     const [result] = await db.query(
-      "INSERT INTO appointments (name, phone, user_id, start_datetime,  end_datetime) VALUES (?, ?, ?, ?, ?)",
-      [name, phone, userID, fullDate, fullDate]
+      "INSERT INTO appointments (name, phone, user_id, start_datetime, end_datetime, total_price, cashback_used) VALUES (?, ?, ?, ?, ?, ?, ?)",
+      [name, phone, userID, fullDate, fullDate, finalPrice, cashbackUsed]
     );
 
     await db.query(
-      "UPDATE users SET appointments = appointments + 1, balance = balance + ? WHERE id = ?",
-      [cashback, userID]
+      "UPDATE users SET appointments = appointments + 1, balance = balance - ? WHERE id = ?",
+      [cashbackUsed, userID]
     );
 
     const appointmentId = result.insertId;
+    await db.query(
+      "INSERT INTO cashback_usage (user_id, appointment_id, cashback_used, usage_date) VALUES (?, ?, ?, ?)",
+      [userID, appointmentId, cashbackUsed, new Date()]
+    );
 
     await Promise.all(
       service.map(async (item) => {
-        const [id] = await db.query("SELECT id FROM prices WHERE name = ?", [
-          item,
-        ]);
-
-        const [time] = await db.query(
-          "SELECT required_time FROM prices WHERE name = ?",
+        const [[serviceData]] = await db.query(
+          "SELECT id FROM prices WHERE name = ?",
           [item]
         );
-
-        lastTime = time[0].required_time;
-        totalTime += +lastTime;
-        const serviceId = id[0].id;
+        if (!serviceData) {
+          throw new Error(`Service ${item} not found`);
+        }
+        const serviceId = serviceData.id;
         await db.query(
           "INSERT INTO appointment_services (appointment_id, service_id) VALUES (?, ?)",
           [appointmentId, serviceId]
@@ -56,11 +81,14 @@ router.post("/", async function (req, res, next) {
 
     res.status(201).json({
       status: "success",
-      message: `Your booking has been successfully registered on date ${fullDate} and finish ${endTime}`,
+      message: `Your booking has been successfully registered on date ${fullDate} and finishes at ${endTime}`,
     });
   } catch (err) {
-    console.log(err);
-    res.status(500).json("Error occurred");
+    console.error(err);
+    res.status(500).json({
+      status: "error",
+      message: "An error occurred while processing your request.",
+    });
   }
 });
 
