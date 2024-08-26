@@ -4,7 +4,7 @@ const db = require("../config/db");
 const calculateAppointmentTime = require("../middlewares/calculateAppointmentTime");
 
 router.post("/", async function (req, res, next) {
-  const { name, phone, date, time, service, userID } = req.body;
+  const { name, phone, date, time, service, userID, cashback } = req.body;
   let lastTime;
   let totalTime = 0;
 
@@ -19,8 +19,8 @@ router.post("/", async function (req, res, next) {
     );
 
     await db.query(
-      "UPDATE users SET appointments = appointments + 1 WHERE id = ?",
-      [userID]
+      "UPDATE users SET appointments = appointments + 1, balance = balance + ? WHERE id = ?",
+      [cashback, userID]
     );
 
     const appointmentId = result.insertId;
