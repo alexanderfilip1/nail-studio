@@ -180,6 +180,7 @@ export default function AppointmentSection() {
       time: formattedTime,
       service: services,
       userID: userID,
+      cashback: cashback,
     };
     console.log(appointmentData);
     try {
