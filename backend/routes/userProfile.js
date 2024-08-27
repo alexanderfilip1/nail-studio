@@ -11,8 +11,9 @@ router.post("/", async (req, res) => {
     ]);
     console.log(user[0]);
     if (user[0]) {
-      const { username, balance, appointments, phone } = user[0];
+      const { id, username, balance, appointments, phone } = user[0];
       const userData = {
+        id: id,
         username: username,
         balance: balance,
         appointments: appointments,
@@ -24,7 +25,7 @@ router.post("/", async (req, res) => {
       return;
     }
   } catch (err) {
-    res.status(500).json({ status: "error", message: "Internat Server Error" });
+    res.status(500).json({ status: "error", message: "Internal Server Error" });
     console.log(err);
   }
 });
