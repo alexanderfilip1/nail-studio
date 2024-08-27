@@ -28,7 +28,8 @@ export default function AppointmentSection() {
   const [userBalance, setUserBalance] = useState(0);
   const [registerPopup, setRegisterPopup] = useState(false);
 
-  const history = useNavigate();
+
+  const navigate = useNavigate();
 
   const PriceList = ({ title, prices, categoryId }) => {
     const filteredPrices = prices.filter(
@@ -258,7 +259,7 @@ export default function AppointmentSection() {
   };
 
   const handleRegister = () => {
-    history.push("/register");
+    navigate("/register");
   };
 
   return (
