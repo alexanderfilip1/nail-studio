@@ -1,6 +1,5 @@
 .header {
   width: 100%;
-  position: relative;
 }
 
 .header__navbar {
@@ -35,6 +34,9 @@
 .header__burgerMenu {
   display: none;
   cursor: pointer;
+}
+.header__logo--img {
+  width: 70%;
 }
 
 @media screen and (max-width: 768px) {

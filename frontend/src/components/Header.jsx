@@ -2,12 +2,13 @@ import React, { useState, useRef, useEffect } from "react";
 import "animate.css"; // Import Animate.css
 import "../assets/css/Header.css";
 import MobileHeader from "./MobileHeader";
-import links from "../components/HeaderLinks";
+import DynamicLinks from "../components/DynamicLinks";
 import logo from "../assets/images/logo.svg";
 
 export default function Header({ mobileHeader, setMobileHeader }) {
   const [animation, setAnimation] = useState("");
   const mobileHeaderRef = useRef(null);
+  const links = DynamicLinks();
 
   const toggleMobileHeader = () => {
     if (mobileHeader) {
@@ -53,23 +54,29 @@ export default function Header({ mobileHeader, setMobileHeader }) {
           />
         </a>
         <ul className="header__navbar--list">
-          {links.map((item, index) => {
-            const { path, link, className } = item;
-            return (
-              <li className="header__navbar--item" key={index}>
-                <a
-                  href={link}
-                  className={
-                    className
-                      ? `header__navbar--link ${className}`
-                      : "header__navbar--link"
-                  }
-                >
-                  {path}
-                </a>
-              </li>
-            );
-          })}
+          {Array.isArray(links) && links.length > 0 ? (
+            links.map((item, index) => {
+              const { path, link, className } = item;
+              return (
+                <li className="header__navbar--item" key={index}>
+                  <a
+                    href={link}
+                    className={
+                      className
+                        ? `header__navbar--link ${className}`
+                        : "header__navbar--link"
+                    }
+                  >
+                    {path}
+                  </a>
+                </li>
+              );
+            })
+          ) : (
+            <li className="header__navbar--item">
+              <span>No Links Available</span>
+            </li>
+          )}
         </ul>
         <div className="header__burgerMenu" onClick={toggleMobileHeader}>
           <svg

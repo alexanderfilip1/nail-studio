@@ -28,6 +28,7 @@ export default function AppointmentSection() {
   const [userBalance, setUserBalance] = useState(0);
   const [registerPopup, setRegisterPopup] = useState(false);
 
+
   const navigate = useNavigate();
 
   const PriceList = ({ title, prices, categoryId }) => {

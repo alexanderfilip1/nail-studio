@@ -1,6 +1,6 @@
 import React from "react";
 import logo from "../assets/images/manicure.svg";
-import links from "../components/HeaderLinks";
+import links from "./FooterLinks";
 import "../assets/css/Footer.css";
 
 export default function Footer() {
