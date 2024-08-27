@@ -1,16 +1,19 @@
 import { useState } from "react";
 import Header from "../components/Header";
-import RegisterSection from "../components/RegisterSection";
-export default function Register() {
+import Footer from "../components/Footer";
+import ProfileSection from "../components/ProfileSection";
+
+export default function Profile() {
   const [mobileHeader, setMobileHeader] = useState(false);
   return (
     <>
       <Header mobileHeader={mobileHeader} setMobileHeader={setMobileHeader} />
       <main
-        className={mobileHeader ? "auth bgGradient blur" : "auth bgGradient"}
+        className={mobileHeader ? "main bgGradient blur " : "main bgGradient"}
       >
-        <RegisterSection />
+        <ProfileSection />
       </main>
+      <Footer />
     </>
   );
 }

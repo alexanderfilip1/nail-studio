@@ -23,6 +23,7 @@ export default function LoginSection() {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(loginData),
+        credentials: "include",
       });
       const body = await req.json();
       console.log(body);

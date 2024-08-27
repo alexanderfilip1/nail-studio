@@ -1,0 +1,142 @@
+.profile__section {
+  max-width: 40rem;
+  margin: 4rem auto;
+  padding: 2rem;
+  background-color: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-radius: 0.75rem;
+  box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.1);
+}
+
+.profile__section--title {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.username {
+  color: #e67e22;
+  text-transform: capitalize;
+}
+
+.profile__info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.profile__info-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background-color: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s;
+}
+
+.profile__info-item:hover {
+  transform: translateY(-0.25rem);
+}
+
+.profile__info-icon {
+  font-size: 1.5rem;
+  color: #e67e22;
+  margin-right: 1rem;
+}
+
+.profile__info-text {
+  font-size: 1rem;
+  color: #555;
+}
+
+.notLoggedIn {
+  text-align: center;
+  font-size: 1.25rem;
+  color: #c0392b;
+  padding: 2rem;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 0.75rem;
+  box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.1);
+}
+
+.loading {
+  text-align: center;
+  font-size: 1.25rem;
+  color: #2980b9;
+  padding: 2rem;
+}
+
+@media (max-width: 480px) {
+  .profile__section {
+    margin: 2rem 1rem;
+    padding: 1.5rem;
+  }
+
+  .profile__section--title {
+    font-size: 1.5rem;
+  }
+
+  .profile__info-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .profile__info-icon {
+    margin-bottom: 0.5rem;
+  }
+}
+
+.action__buttons {
+  width: 100%;
+  display: flex;
+  gap: 4%;
+}
+
+.action__buttons .btn {
+  width: 48%;
+}
+
+.appointment__history--list {
+  margin-top: 20px;
+  padding-left: 0;
+  list-style: none;
+}
+
+.service__name {
+  white-space: pre-line;
+  font-size: 1rem;
+  color: #333;
+  line-height: 1.5;
+  font-weight: 600;
+}
+
+.appointment__history--item {
+  background-color: #f8e8d6;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.appointment__history--item h2 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 0.25rem;
+}
+
+.appointment__history--item p {
+  margin: 0.25rem 0;
+  color: #555;
+}
+
+.cashback-positive {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.cashback-negative {
+  background-color: #f8d7da;
+  color: #721c24;
+}
