@@ -4,7 +4,16 @@ const db = require("../config/db");
 const calculateAppointmentTime = require("../middlewares/calculateAppointmentTime");
 
 router.post("/", async function (req, res, next) {
-  const { name, phone, date, time, service, userID, cashback } = req.body;
+  const {
+    name,
+    phone,
+    date,
+    time,
+    service,
+    userID,
+    cashback,
+    receiveCashback,
+  } = req.body;
   let lastTime;
   let totalTime = 0;
 
@@ -35,7 +44,7 @@ router.post("/", async function (req, res, next) {
     const totalPrice = servicePrices.reduce((acc, price) => acc + price, 0);
 
     const cashbackAvailable = user.balance;
-    const cashbackUsed = Math.min(cashbackAvailable, totalPrice);
+    const cashbackUsed = Math.min(cashbackAvailable, cashback, totalPrice);
     const finalPrice = totalPrice - cashbackUsed;
 
     const [result] = await db.query(
@@ -43,16 +52,34 @@ router.post("/", async function (req, res, next) {
       [name, phone, userID, fullDate, fullDate, finalPrice, cashbackUsed]
     );
 
-    await db.query(
-      "UPDATE users SET appointments = appointments + 1, balance = balance - ? WHERE id = ?",
-      [cashbackUsed, userID]
-    );
-
     const appointmentId = result.insertId;
-    await db.query(
-      "INSERT INTO cashback_usage (user_id, appointment_id, cashback_used, usage_date) VALUES (?, ?, ?, ?)",
-      [userID, appointmentId, cashbackUsed, new Date()]
-    );
+
+    if (cashbackUsed > 0) {
+      await db.query(
+        "UPDATE users SET appointments = appointments + 1, balance = balance - ? WHERE id = ?",
+        [cashbackUsed, userID]
+      );
+      await db.query(
+        "INSERT INTO cashback_usage (user_id, appointment_id, cashback_used, operation, usage_date) VALUES (?, ?, ?, ?, ?)",
+        [userID, appointmentId, cashbackUsed, "-", new Date()]
+      );
+    } else {
+      await db.query(
+        "UPDATE users SET appointments = appointments + 1 WHERE id = ?",
+        [userID]
+      );
+    }
+
+    if (receiveCashback > 0) {
+      await db.query("UPDATE users SET balance = balance + ? WHERE id = ?", [
+        receiveCashback,
+        userID,
+      ]);
+      await db.query(
+        "INSERT INTO cashback_usage (user_id, appointment_id, cashback_used, operation, usage_date) VALUES (?, ?, ?, ?, ?)",
+        [userID, appointmentId, receiveCashback, "+", new Date()]
+      );
+    }
 
     await Promise.all(
       service.map(async (item) => {
@@ -78,12 +105,14 @@ router.post("/", async function (req, res, next) {
       endTime,
       appointmentId,
     ]);
+
     if (user.phone === "0" && user.id !== "0") {
       await db.query("UPDATE users SET phone = ? WHERE id = ?", [
         phone,
         userID,
       ]);
     }
+
     res.status(201).json({
       status: "success",
       message: `Your booking has been successfully registered on date ${fullDate} and finishes at ${endTime}`,
