@@ -88,3 +88,45 @@
     margin-bottom: 0.5rem;
   }
 }
+
+.action__buttons {
+  width: 100%;
+  display: flex;
+  gap: 4%;
+}
+
+.action__buttons .btn {
+  width: 48%;
+}
+
+.appointment__history--list {
+  margin-top: 20px;
+  padding-left: 0;
+  list-style: none;
+}
+
+.service__name {
+  white-space: pre-line;
+  font-size: 1rem;
+  color: #333;
+  line-height: 1.5;
+  font-weight: 600;
+}
+
+.appointment__history--item {
+  background-color: #f8e8d6;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.appointment__history--item h2 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 0.25rem;
+}
+
+.appointment__history--item p {
+  margin: 0.25rem 0;
+  color: #555;
+}
