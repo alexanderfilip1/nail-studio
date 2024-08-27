@@ -20,6 +20,7 @@ const authToken = require("./routes/authToken");
 const userProfile = require("./routes/userProfile");
 const fetchUserAppointments = require("./routes/fetchUserAppointments");
 const cashbackHistory = require("./routes/cashbackHistory");
+const checkAdmin = require("./routes/checkAdmin");
 
 var app = express();
 
@@ -40,5 +41,6 @@ app.use("/api/verifyToken", authToken);
 app.use("/api/getUser", userProfile);
 app.use("/api/fetchAppointments", fetchUserAppointments);
 app.use("/api/cashbackHistory", cashbackHistory);
+app.use("/api/checkAdmin", checkAdmin);
 
 module.exports = app;
