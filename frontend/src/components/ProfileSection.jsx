@@ -6,7 +6,7 @@ import { getUserProfile } from "../services/userProfileService";
 export default function ProfileSection() {
   const authStatus = useAuthToken();
   const [profile, setProfile] = useState({
-    id: "1",
+    id: "",
     username: "",
     balance: 0,
     appointments: 0,
@@ -14,6 +14,8 @@ export default function ProfileSection() {
   });
   const [appointmentsHistory, setAppointmentsHistory] = useState(false);
   const [appointments, setAppointments] = useState([]);
+  const [cashbackHistory, setCashbackHistory] = useState(false);
+  const [cashback, setCashback] = useState([]);
 
   const getUserData = async () => {
     if (authStatus !== null) {
@@ -29,19 +31,38 @@ export default function ProfileSection() {
   };
 
   const getAppointmentHistory = async () => {
-    try {
-      const req = await fetch("http://localhost:3000/api/fetchAppointments", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ userID: profile.id }),
-      });
-      const body = await req.json();
-      if (body.status === "success") {
-        console.log(body);
-        setAppointments(body.appointments);
+    if (profile.id) {
+      try {
+        const req = await fetch("http://localhost:3000/api/fetchAppointments", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ userID: profile.id }),
+        });
+        const body = await req.json();
+        if (body.status === "success") {
+          setAppointments(body.appointments);
+        }
+      } catch (err) {
+        console.log(err);
       }
-    } catch (err) {
-      console.log(err);
+    }
+  };
+
+  const getCashbackHistory = async () => {
+    if (profile.id) {
+      try {
+        const req = await fetch("http://localhost:3000/api/cashbackHistory", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ userID: profile.id }),
+        });
+        const body = await req.json();
+        if (body.status === "success") {
+          setCashback(body.message);
+        }
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
@@ -50,10 +71,32 @@ export default function ProfileSection() {
   }, [authStatus]);
 
   useEffect(() => {
-    if (appointmentsHistory) {
+    if (appointmentsHistory && profile.id) {
+      setCashbackHistory(false);
       getAppointmentHistory();
     }
-  }, [appointmentsHistory]);
+  }, [appointmentsHistory, profile.id]);
+
+  useEffect(() => {
+    if (cashbackHistory && profile.id) {
+      setAppointmentsHistory(false);
+      getCashbackHistory();
+    }
+  }, [cashbackHistory, profile.id]);
+
+  const formatDate = (dateString) => {
+    const options = {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    };
+    return new Date(dateString).toLocaleString("en-US", options);
+  };
 
   return (
     <section className="profile__section container">
@@ -87,7 +130,16 @@ export default function ProfileSection() {
                   ? "Hide Appointments"
                   : "Show Appointments"}
               </button>
-              <button className="btn">See Cashback History</button>
+              <button
+                className="btn"
+                onClick={() => {
+                  setCashbackHistory(!cashbackHistory);
+                }}
+              >
+                {cashbackHistory
+                  ? "Hide Cashback History"
+                  : "See Cashback History"}
+              </button>
             </div>
             {appointmentsHistory && (
               <ul className="appointment__history--list">
@@ -100,19 +152,7 @@ export default function ProfileSection() {
                     cashback_used,
                   } = item;
 
-                  const formattedDate = new Date(start_datetime).toLocaleString(
-                    "en-US",
-                    {
-                      weekday: "long",
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                      second: "2-digit",
-                      hour12: false,
-                    }
-                  );
+                  const formattedDate = formatDate(start_datetime);
 
                   return (
                     <li className="appointment__history--item bgBeige" key={id}>
@@ -126,6 +166,34 @@ export default function ProfileSection() {
                       <p>Total Price: {total_price} LEI</p>
                       <p>Cashback Used: {cashback_used} LEI</p>
                       <p>Start Time: {formattedDate}</p>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+
+            {cashbackHistory && (
+              <ul className="appointment__history--list">
+                {cashback.map((item) => {
+                  const { id, cashback, usage_date, op } = item;
+                  const formattedDate = formatDate(usage_date);
+
+                  const cashbackClass =
+                    op === "+" ? "cashback-positive" : "cashback-negative";
+
+                  return (
+                    <li
+                      className={`appointment__history--item ${cashbackClass}`}
+                      key={id}
+                    >
+                      <h2 className="service__title">
+                        Cashback Amount:{" "}
+                        <span className="service__name">
+                          {op}
+                          {cashback}
+                        </span>
+                      </h2>
+                      <p>Usage date: {formattedDate}</p>
                     </li>
                   );
                 })}
