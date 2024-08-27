@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../assets/css/AppointmentSection.css";
 import Loader from "../components/Loader";
 import useAuthToken from "../hooks/useAuthToken.jsx";
@@ -28,7 +28,7 @@ export default function AppointmentSection() {
   const [userBalance, setUserBalance] = useState(0);
   const [registerPopup, setRegisterPopup] = useState(false);
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const PriceList = ({ title, prices, categoryId }) => {
     const filteredPrices = prices.filter(
@@ -258,7 +258,7 @@ export default function AppointmentSection() {
   };
 
   const handleRegister = () => {
-    history.push("/register");
+    navigate("/register");
   };
 
   return (
