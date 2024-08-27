@@ -130,3 +130,13 @@
   margin: 0.25rem 0;
   color: #555;
 }
+
+.cashback-positive {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.cashback-negative {
+  background-color: #f8d7da;
+  color: #721c24;
+}
