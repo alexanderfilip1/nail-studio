@@ -12,10 +12,11 @@ router.post("/", async (req, res) => {
     // console.log(cashback);
     const cashBackHistory = [];
     cashback.map((item) => {
-      const { cashback_used, usage_date } = item;
+      const { cashback_used, usage_date, operation } = item;
       const data = {
         cashback: cashback_used,
         usage_date: usage_date,
+        op: operation,
       };
       cashBackHistory.push(data);
     });
