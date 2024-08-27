@@ -142,7 +142,7 @@ export default function ProfileSection() {
               </button>
             </div>
             {appointmentsHistory && (
-              <ul className="appointment__history--list">
+              <ul className="appointment__history--list fadeIn">
                 {appointments.map((item) => {
                   const {
                     id,
@@ -173,7 +173,7 @@ export default function ProfileSection() {
             )}
 
             {cashbackHistory && (
-              <ul className="appointment__history--list">
+              <ul className="appointment__history--list fadeIn">
                 {cashback.map((item) => {
                   const { id, cashback, usage_date, op } = item;
                   const formattedDate = formatDate(usage_date);
