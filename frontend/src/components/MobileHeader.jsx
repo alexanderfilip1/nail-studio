@@ -1,8 +1,10 @@
 import React from "react";
-import links from "../components/HeaderLinks";
+import DynamicLinks from "../components/DynamicLinks";
 import "../assets/css/MobileHeader.css";
 
 export default function MobileHeader() {
+  const links = DynamicLinks();
+
   return (
     <ul className="mobileHeader--list">
       {links.map((item, index) => {
