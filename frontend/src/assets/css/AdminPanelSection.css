@@ -68,3 +68,10 @@
   margin-bottom: 20px;
   text-align: center;
 }
+
+.notAuthorized {
+  color: red;
+  text-align: center;
+  margin-top: 1rem;
+  text-shadow: 0.1rem 0.1rem 0.2rem yellow;
+}
