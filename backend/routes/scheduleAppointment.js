@@ -9,12 +9,10 @@ router.post("/", async function (req, res, next) {
   let totalTime = 0;
 
   try {
-    const [month, day, year] = date.split("/");
-
+    const [day, month, year] = date.split("/");
     const formattedDate = `${year}-${month}-${day}`;
 
     const fullDate = `${formattedDate} ${time}:00`;
-
     const [[user]] = await db.query("SELECT * FROM users WHERE id = ?", [
       userID,
     ]);
@@ -39,8 +37,6 @@ router.post("/", async function (req, res, next) {
     const cashbackAvailable = user.balance;
     const cashbackUsed = Math.min(cashbackAvailable, totalPrice);
     const finalPrice = totalPrice - cashbackUsed;
-
-    console.log("Full date-time value for insertion:", fullDate);
 
     const [result] = await db.query(
       "INSERT INTO appointments (name, phone, user_id, start_datetime, end_datetime, total_price, cashback_used) VALUES (?, ?, ?, ?, ?, ?, ?)",
