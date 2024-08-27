@@ -175,6 +175,7 @@ export default function AppointmentSection() {
       service: services,
       userID: userID,
       cashback: cashbackUsed,
+      receiveCashback: cashback,
     };
 
     try {
@@ -191,10 +192,14 @@ export default function AppointmentSection() {
       } else {
         setError(body.message);
       }
-      setLoader(false);
+      setTimeout(() => {
+        setLoader(false);
+      }, 1500);
     } catch (err) {
       console.error(err);
-      setLoader(false);
+      setTimeout(() => {
+        setLoader(false);
+      }, 1500);
     }
   };
 
@@ -225,7 +230,7 @@ export default function AppointmentSection() {
       return;
     }
     if (authStatus.status === true) {
-      setCashback(Math.round(totalPrice / 10));
+      setCashback(Math.round(totalPrice / 20));
     }
   }, [authStatus, totalPrice]);
 
@@ -233,7 +238,10 @@ export default function AppointmentSection() {
     if (authStatus === null) {
       return;
     }
+
     if (authStatus.status === true && userBalance > 0) {
+      const effectiveCashback =
+        totalPrice <= userBalance ? totalPrice : userBalance;
       return (
         <label>
           <input
@@ -243,7 +251,7 @@ export default function AppointmentSection() {
             checked={cashbackUse}
             onChange={() => setCashbackUse(!cashbackUse)}
           />
-          USE {userBalance} LEI from your cashback towards your balance
+          {`USE ${effectiveCashback} LEI from your cashback towards your balance`}
         </label>
       );
     }
@@ -369,7 +377,7 @@ export default function AppointmentSection() {
               {services.length > 0 && (
                 <div className="summary-total">
                   Total Price: {totalPrice} LEI
-                  {cashbackUse && (
+                  {!cashbackUse && (
                     <h4> Cashback: {Math.min(cashback, totalPrice)} LEI</h4>
                   )}
                 </div>
