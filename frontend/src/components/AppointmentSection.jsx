@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import { useHistory } from "react-router-dom";
 import "../assets/css/AppointmentSection.css";
 import Loader from "../components/Loader";
 import useAuthToken from "../hooks/useAuthToken.jsx";
 import { getUserProfile } from "../services/userProfileService";
+import RegisterPopup from "./RegisterPopup.jsx";
 
 export default function AppointmentSection() {
   const [date, setDate] = useState(new Date());
@@ -24,6 +26,9 @@ export default function AppointmentSection() {
   const [cashback, setCashback] = useState(0);
   const [cashbackUse, setCashbackUse] = useState(false);
   const [userBalance, setUserBalance] = useState(0);
+  const [registerPopup, setRegisterPopup] = useState(false);
+
+  const history = useHistory();
 
   const PriceList = ({ title, prices, categoryId }) => {
     const filteredPrices = prices.filter(
@@ -158,6 +163,7 @@ export default function AppointmentSection() {
   };
 
   const registerAppointment = async () => {
+    setRegisterPopup(false);
     setLoader(true);
     const formattedTime = `${hour}:${minute}`;
     const formattedDate = date.toLocaleDateString().split("T")[0];
@@ -175,7 +181,6 @@ export default function AppointmentSection() {
       service: services,
       userID: userID,
       cashback: cashbackUsed,
-      receiveCashback: cashback,
     };
 
     try {
@@ -197,9 +202,7 @@ export default function AppointmentSection() {
       }, 1500);
     } catch (err) {
       console.error(err);
-      setTimeout(() => {
-        setLoader(false);
-      }, 1500);
+      setLoader(false);
     }
   };
 
@@ -230,7 +233,7 @@ export default function AppointmentSection() {
       return;
     }
     if (authStatus.status === true) {
-      setCashback(Math.round(totalPrice / 20));
+      setCashback(Math.round(totalPrice / 10));
     }
   }, [authStatus, totalPrice]);
 
@@ -238,10 +241,7 @@ export default function AppointmentSection() {
     if (authStatus === null) {
       return;
     }
-
     if (authStatus.status === true && userBalance > 0) {
-      const effectiveCashback =
-        totalPrice <= userBalance ? totalPrice : userBalance;
       return (
         <label>
           <input
@@ -251,15 +251,25 @@ export default function AppointmentSection() {
             checked={cashbackUse}
             onChange={() => setCashbackUse(!cashbackUse)}
           />
-          {`USE ${effectiveCashback} LEI from your cashback towards your balance`}
+          USE {userBalance} LEI from your cashback towards your balance
         </label>
       );
     }
   };
 
+  const handleRegister = () => {
+    history.push("/register");
+  };
+
   return (
     <>
       {loader && <Loader />}
+      {registerPopup && (
+        <RegisterPopup
+          onClose={registerAppointment}
+          onRegister={handleRegister}
+        />
+      )}
       <section className="appointment__section container">
         <h1 className="appointment__section--title">Booking</h1>
         {currentStep === 1 && (
@@ -396,6 +406,9 @@ export default function AppointmentSection() {
                   <button
                     onClick={() => {
                       if (clientName && clientPhone) {
+                        if (authStatus.status === false) {
+                          setRegisterPopup(true);
+                        }
                         registerAppointment();
                       } else {
                         setError("Enter your name and phone number");
