@@ -3,36 +3,29 @@ var router = express.Router();
 const db = require("../config/db");
 const validate = require("../middlewares/validate");
 const checkAdminSchema = require("../schemas/idSchema");
+const jwt = require("jsonwebtoken");
 
-router.post("/", validate(checkAdminSchema), async function (req, res, next) {
-  const { userID } = req.body;
-
-  if (!userID || isNaN(userID)) {
-    return res.status(400).json({ status: "error", message: "Invalid userID" });
-  }
-
-  try {
-    const [[isAdmin]] = await db.query("SELECT admin FROM users WHERE id = ?", [
-      userID,
-    ]);
-
-    if (!isAdmin) {
-      return res
-        .status(404)
-        .json({ status: "error", message: "User not found" });
+router.get("/", async (req, res) => {
+  console.log(req.cookies.token);
+  if (req.cookies.token) {
+    try {
+      const decoded = jwt.verify(req.cookies.token, process.env.JWT_SECRET);
+      if (decoded.id < 1) {
+        return;
+      }
+      const [[isAdmin]] = await db.query(
+        "SELECT admin FROM users WHERE id = ?",
+        [decoded.id]
+      );
+      if (isAdmin.admin === 1) {
+        console.log("He's admin!");
+        res.status(200).json({ isAdmin: true });
+      }
+    } catch (err) {
+      res.status(401).json({ isAdmin: false });
     }
-
-    const { admin } = isAdmin;
-    if (admin) {
-      return res.status(200).json({ isAdmin: true });
-    } else {
-      return res.status(403).json({ isAdmin: false, message: "Not an admin" });
-    }
-  } catch (err) {
-    console.error("Database error:", err);
-    return res
-      .status(500)
-      .json({ status: "error", message: "Internal Server Error" });
+  } else {
+    res.status(401).json({ isAdmin: false });
   }
 });
 
