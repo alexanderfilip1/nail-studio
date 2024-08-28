@@ -11,12 +11,11 @@ export default function AdminPanel() {
   const userStatus = useAuthToken();
   const navigate = useNavigate();
 
-  const checkIfAdmin = async (id) => {
+  const checkIfAdmin = async () => {
     try {
       const req = await fetch("http://localhost:3000/api/checkAdmin", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ userID: id }),
+        method: "GET",
+        credentials: "include",
       });
       const body = await req.json();
       setIsAdmin(body.isAdmin);
