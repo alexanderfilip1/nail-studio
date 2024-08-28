@@ -1,9 +1,9 @@
 var express = require("express");
 var router = express.Router();
 const db = require("../config/db");
-const adminAuth = require("../middlewares/")
+const secureAdmin = require("../middlewares/secureAdmin");
 
-router.get("/", async (req, res) => {
+router.get("/", secureAdmin, async (req, res) => {
   try {
     const [users] = await db.query("SELECT * FROM users");
     res.status(200).json(users);
@@ -13,23 +13,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
-  const { id } = req.params;
-  try {
-    const [[user]] = await db.query("SELECT * FROM users WHERE id = ?", [id]);
-    if (!user) {
-      return res
-        .status(404)
-        .json({ status: "error", message: "User not found" });
-    }
-    res.status(200).json(user);
-  } catch (err) {
-    console.error("Database error:", err);
-    res.status(500).json({ status: "error", message: "Internal Server Error" });
-  }
-});
-
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", secureAdmin, async (req, res) => {
   const { id } = req.params;
 
   try {
