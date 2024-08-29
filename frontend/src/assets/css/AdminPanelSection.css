@@ -76,7 +76,8 @@
   text-shadow: 0.1rem 0.1rem 0.2rem yellow;
 }
 
-.list-item {
+.list-item,
+.form {
   background-color: #cfcfcf;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
@@ -107,4 +108,27 @@
   display: flex;
   justify-content: flex-end;
   margin: 0 0 1rem auto;
+}
+
+.addServiceBtn {
+  display: flex;
+  margin: 0 0 1rem auto;
+}
+
+.form {
+  display: flex;
+  align-items: center;
+}
+.form label {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 50%;
+}
+
+.form input,
+.form select {
+  padding: 0.25rem;
+  border-radius: 0.5rem;
+  width: 100%;
 }
