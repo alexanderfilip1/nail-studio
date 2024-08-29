@@ -6,6 +6,7 @@ export default function AdminPanelSection() {
   const [userList, setUserList] = useState([]);
   const [appointments, setAppointments] = useState([]);
   const [originalAppointments, setOriginalAppointments] = useState([]);
+  const [services, setServices] = useState([]);
 
   const handleSectionChange = (section) => {
     setActiveSection(section);
@@ -46,7 +47,7 @@ export default function AdminPanelSection() {
       });
       const body = await req.json();
       setAppointments(body);
-      setOriginalAppointments(body); 
+      setOriginalAppointments(body);
     } catch (err) {
       console.log(err);
     }
@@ -87,6 +88,42 @@ export default function AdminPanelSection() {
     }
   };
 
+  const getServices = async () => {
+    try {
+      const req = await fetch("http://localhost:3000/api/admin/services", {
+        method: "GET",
+        credentials: "include",
+      });
+      const body = await req.json();
+      setServices(body);
+      console.log(body);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const removeService = async (id) => {
+    try {
+      const req = await fetch(
+        `http://localhost:3000/api/admin/services/${id}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        }
+      );
+      const body = await req.json();
+      if (body.status === "success") {
+        setServices((prevServices) =>
+          prevServices.filter((services) => services.id !== id)
+        );
+      } else {
+        console.log("Failed to delete appointment:", body.message);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     getUserList();
   }, []);
@@ -117,7 +154,10 @@ export default function AdminPanelSection() {
           <li className="admin__aside--item">
             <button
               className={activeSection === "Services" ? "active" : ""}
-              onClick={() => handleSectionChange("Services")}
+              onClick={() => {
+                handleSectionChange("Services");
+                getServices();
+              }}
             >
               Services
             </button>
@@ -179,7 +219,7 @@ export default function AdminPanelSection() {
               type="text"
               placeholder="Search by name"
               className="search"
-              onChange={handleSearch} 
+              onChange={handleSearch}
             />
             <ul className="appointments__list">
               {appointments.map((appointment) => {
@@ -212,7 +252,43 @@ export default function AdminPanelSection() {
             </ul>
           </>
         )}
-        {activeSection === "Services" && <h1>All Services</h1>}
+        {activeSection === "Services" && (
+          <>
+            <h1>All Services</h1>
+            <ul className="services__list">
+              {services.map((service) => {
+                const { id, price, name, category_id, required_time } = service;
+                return (
+                  <li key={id} className="services__list--item list-item">
+                    <h3>
+                      Name {name} ({category_id === 1 ? "Manicure" : "Pedicure"}
+                      )
+                    </h3>
+                    <p>Price: {price}</p>
+                    <p>Required Time: {required_time} min</p>
+                    <button
+                      className="close__btn"
+                      aria-label="Remove user"
+                      onClick={() => {
+                        removeService(id);
+                      }}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        style={{ fill: "red" }}
+                      >
+                        <path d="M18.3 5.71c-.39-.39-1.02-.39-1.41 0L12 10.59 7.11 5.7c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41L10.59 12l-4.88 4.88c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0L12 13.41l4.88 4.88c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L13.41 12l4.88-4.88c.38-.39.38-1.03 0-1.41z" />
+                      </svg>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </>
+        )}
         {activeSection === "Settings" && <h1>Settings</h1>}
       </article>
     </section>
