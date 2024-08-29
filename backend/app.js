@@ -23,6 +23,7 @@ const cashbackHistory = require("./routes/cashbackHistory");
 const checkAdmin = require("./routes/checkAdmin");
 const users = require("./routes/users");
 const appointments = require("./routes/appointments");
+const services = require("./routes/services");
 
 var app = express();
 
@@ -46,5 +47,6 @@ app.use("/api/cashbackHistory", cashbackHistory);
 app.use("/api/checkAdmin", checkAdmin);
 app.use("/api/admin/users", users);
 app.use("/api/admin/appointments", appointments);
+app.use("/api/admin/services", services);
 
 module.exports = app;
