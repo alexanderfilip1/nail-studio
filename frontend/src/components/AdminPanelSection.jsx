@@ -7,6 +7,11 @@ export default function AdminPanelSection() {
   const [appointments, setAppointments] = useState([]);
   const [originalAppointments, setOriginalAppointments] = useState([]);
   const [services, setServices] = useState([]);
+  const [addService, setAddService] = useState(false);
+  const [serviceName, setServiceName] = useState("");
+  const [serviceDuration, setServiceDuration] = useState(0);
+  const [servicePrice, setServicePrice] = useState(0);
+  const [serviceCategory, setServiceCategory] = useState(1);
 
   const handleSectionChange = (section) => {
     setActiveSection(section);
@@ -119,6 +124,26 @@ export default function AdminPanelSection() {
       } else {
         console.log("Failed to delete appointment:", body.message);
       }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const createService = async () => {
+    try {
+      const req = await fetch("http://localhost:3000/api/admin/services", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+          name: serviceName,
+          category_id: serviceCategory,
+          required_time: serviceDuration,
+          price: servicePrice,
+        }),
+      });
+      const body = await req.json();
+      console.log(body);
     } catch (err) {
       console.log(err);
     }
@@ -258,6 +283,64 @@ export default function AdminPanelSection() {
         {activeSection === "Services" && (
           <>
             <h1>All Services</h1>
+            <button
+              className="btn addServiceBtn"
+              onClick={() => setAddService(!addService)}
+            >
+              Add Service
+            </button>
+            {addService ? (
+              <form
+                className="form"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  createService();
+                }}
+              >
+                <label htmlFor="name">
+                  <input
+                    type="text"
+                    placeholder="Service name"
+                    className=""
+                    onChange={(e) => setServiceName(e.target.value)}
+                  />
+                </label>
+                <label htmlFor="number">
+                  {" "}
+                  <input
+                    type="number"
+                    name="number"
+                    id="number"
+                    placeholder="Required time(minutes)"
+                    onChange={(e) => setServiceDuration(e.target.value)}
+                  />
+                </label>
+                <label htmlFor="price">
+                  <input
+                    type="number"
+                    name="price"
+                    id="price"
+                    placeholder="Service price"
+                    onChange={(e) => setServicePrice(e.target.value)}
+                  />
+                </label>
+                <label htmlFor="serviceChoice">
+                  <select
+                    name="serviceChoice"
+                    id="serviceChoice"
+                    onChange={(e) => {
+                      setServiceCategory(e.target.value);
+                    }}
+                  >
+                    <option value="1">Manicure</option>
+                    <option value="2">Pedicure</option>
+                  </select>
+                </label>
+                <button className="btn">Add</button>
+              </form>
+            ) : (
+              ""
+            )}
             <ul className="services__list">
               {services.map((service) => {
                 const { id, price, name, category_id, required_time } = service;
