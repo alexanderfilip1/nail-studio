@@ -5,6 +5,7 @@ export default function AdminPanelSection() {
   const [activeSection, setActiveSection] = useState("Users");
   const [userList, setUserList] = useState([]);
   const [appointments, setAppointments] = useState([]);
+  const [originalAppointments, setOriginalAppointments] = useState([]);
 
   const handleSectionChange = (section) => {
     setActiveSection(section);
@@ -45,6 +46,7 @@ export default function AdminPanelSection() {
       });
       const body = await req.json();
       setAppointments(body);
+      setOriginalAppointments(body); 
     } catch (err) {
       console.log(err);
     }
@@ -69,6 +71,19 @@ export default function AdminPanelSection() {
       }
     } catch (err) {
       console.log(err);
+    }
+  };
+
+  const handleSearch = (e) => {
+    const searchTerm = e.target.value.toLowerCase();
+    if (searchTerm === "") {
+      setAppointments(originalAppointments);
+    } else {
+      setAppointments(
+        originalAppointments.filter((appointment) =>
+          appointment.name.toLowerCase().includes(searchTerm)
+        )
+      );
     }
   };
 
@@ -160,6 +175,12 @@ export default function AdminPanelSection() {
         {activeSection === "Appointments" && (
           <>
             <h1>All Appointments</h1>
+            <input
+              type="text"
+              placeholder="Search by name"
+              className="search"
+              onChange={handleSearch} 
+            />
             <ul className="appointments__list">
               {appointments.map((appointment) => {
                 const { id, name, phone, start_datetime } = appointment;
