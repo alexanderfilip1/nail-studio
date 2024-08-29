@@ -98,3 +98,12 @@
   align-items: center;
   cursor: pointer;
 }
+
+.search {
+  padding: 0.25rem;
+  border-radius: 1rem;
+  border: 0.1rem solid #212121;
+  display: flex;
+  justify-content: flex-end;
+  margin: 0 0 1rem auto;
+}
