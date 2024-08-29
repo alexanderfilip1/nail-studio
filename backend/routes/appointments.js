@@ -19,6 +19,8 @@ router.delete("/:id", secureAdmin, async (req, res) => {
   try {
     await db.query("START TRANSACTION");
 
+    await db.query("DELETE FROM cashback_usage WHERE appointment_id = ?", [id]);
+
     await db.query(
       "DELETE FROM appointment_services WHERE appointment_id = ?",
       [id]
