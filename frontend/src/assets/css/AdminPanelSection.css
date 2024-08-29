@@ -76,7 +76,7 @@
   text-shadow: 0.1rem 0.1rem 0.2rem yellow;
 }
 
-.user__list--item {
+.list-item {
   background-color: #cfcfcf;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
