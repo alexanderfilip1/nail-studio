@@ -214,7 +214,10 @@ export default function AdminPanelSection() {
         )}
         {activeSection === "Appointments" && (
           <>
-            <h1>All Appointments</h1>
+            <h1>
+              All Appointments{" "}
+              {appointments.length > 0 ? `(${appointments.length})` : ""}
+            </h1>
             <input
               type="text"
               placeholder="Search by name"
