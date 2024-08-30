@@ -77,7 +77,7 @@
 }
 
 .list-item,
-.form {
+.admin__form {
   background-color: #cfcfcf;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
@@ -115,20 +115,28 @@
   margin: 0 0 1rem auto;
 }
 
-.form {
+.admin__form {
   display: flex;
   align-items: center;
+  flex-direction: column;
+  margin: 1rem;
+  border: 0.1rem solid #fff;
 }
-.form label {
+.admin__form label {
   display: flex;
   flex-direction: column;
   gap: 1rem;
   width: 50%;
 }
 
-.form input,
-.form select {
+.admin__form input,
+.admin__form select {
   padding: 0.25rem;
   border-radius: 0.5rem;
   width: 100%;
+}
+
+.edit__actionButtons {
+  display: flex;
+  gap: 1rem;
 }
