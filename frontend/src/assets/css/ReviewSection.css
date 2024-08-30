@@ -34,7 +34,8 @@
   margin: 0;
 }
 
-.review-stars .star {
+.review-stars .star,
+.star.filled {
   color: #ffcc00;
   margin-right: 0.25rem;
 }
@@ -50,4 +51,32 @@
 }
 .slick-prev:before {
   color: #212121;
+}
+
+.review__form {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.textarea__review {
+  resize: none;
+  width: 100%;
+  border-radius: 1rem;
+}
+
+.star {
+  cursor: pointer;
+  height: 2em;
+  width: 2em;
+}
+.review__actionBtns {
+  display: flex;
+  justify-content: space-between;
+}
+.review__btn {
+  width: 48%;
 }
