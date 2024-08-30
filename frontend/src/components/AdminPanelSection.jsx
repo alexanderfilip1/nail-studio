@@ -15,6 +15,11 @@ export default function AdminPanelSection() {
   const [serviceCategory, setServiceCategory] = useState(1);
   const [editingServiceId, setEditingServiceId] = useState(null);
 
+  const [editName, setEditName] = useState("");
+  const [editPrice, setEditPrice] = useState(0);
+  const [editRequiredTime, setEditRequiredTime] = useState(0);
+  const [editCategoryId, setEditCategoryId] = useState(1);
+
   const handleSectionChange = (section) => {
     setActiveSection(section);
   };
@@ -152,9 +157,43 @@ export default function AdminPanelSection() {
     }
   };
 
-  const handleEditButton = (id) => {
-    setEditingServiceId((prevId) => (prevId === id ? null : id));
+  const handleEditButton = (service) => {
+    setEditingServiceId(service.id);
+    setEditName(service.name);
+    setEditPrice(service.price);
+    setEditRequiredTime(service.required_time);
+    setEditCategoryId(service.category_id);
   };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const req = await fetch(
+        `http://localhost:3000/api/admin/services/${editingServiceId}`,
+        {
+          method: "PUT",
+          headers: { "content-type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({
+            name: editName,
+            price: editPrice,
+            required_time: editRequiredTime,
+            category_id: editCategoryId,
+          }),
+        }
+      );
+      const body = await req.json();
+      if (body.status === "success") {
+        setEditingServiceId(null);
+        getServices(); 
+      } else {
+        console.log("Failed to update service:", body.message);
+      }
+    } catch (err) {
+      console.log("Failed to update service:", err);
+    }
+  };
+
   useEffect(() => {
     getUserList();
   }, []);
@@ -331,38 +370,46 @@ export default function AdminPanelSection() {
                     )}
                     <button
                       className="btn"
-                      onClick={() => handleEditButton(id)}
+                      onClick={() => handleEditButton(service)}
                     >
                       Edit
                     </button>
                     {editingServiceId === id && (
                       <div className="editService__container fadeIn">
-                        <form className="admin__form">
+                        <form
+                          className="admin__form"
+                          onSubmit={handleEditSubmit}
+                        >
                           <label htmlFor="service__name">
                             Service Name
                             <input
                               type="text"
-                              value={name}
+                              value={editName}
                               className="input"
                               id="service__name"
+                              onChange={(e) => setEditName(e.target.value)}
                             />
                           </label>
                           <label htmlFor="service__price">
                             Service Price
                             <input
                               type="number"
-                              value={price}
+                              value={editPrice}
                               className="input"
                               id="service__price"
+                              onChange={(e) => setEditPrice(e.target.value)}
                             />
                           </label>
                           <label htmlFor="service__time">
                             Required Time
                             <input
                               type="number"
-                              value={required_time}
+                              value={editRequiredTime}
                               className="input"
                               id="service__time"
+                              onChange={(e) =>
+                                setEditRequiredTime(e.target.value)
+                              }
                             />
                           </label>
                           <label htmlFor="serviceCategory">
@@ -370,14 +417,19 @@ export default function AdminPanelSection() {
                             <select
                               name="serviceCategory"
                               id="serviceCategory"
-                              value={category_id}
+                              value={editCategoryId}
+                              onChange={(e) =>
+                                setEditCategoryId(e.target.value)
+                              }
                             >
                               <option value="1">Manicure</option>
                               <option value="2">Pedicure</option>
                             </select>
                           </label>
                           <div className="edit__actionButtons">
-                            <button className="btn">Submit</button>
+                            <button className="btn" type="submit">
+                              Submit
+                            </button>
                             <button
                               className="btn"
                               onClick={() => setEditingServiceId(null)}
