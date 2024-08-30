@@ -13,6 +13,7 @@ export default function AdminPanelSection() {
   const [serviceDuration, setServiceDuration] = useState(0);
   const [servicePrice, setServicePrice] = useState(0);
   const [serviceCategory, setServiceCategory] = useState(1);
+  const [editingServiceId, setEditingServiceId] = useState(null);
 
   const handleSectionChange = (section) => {
     setActiveSection(section);
@@ -151,6 +152,9 @@ export default function AdminPanelSection() {
     }
   };
 
+  const handleEditButton = (id) => {
+    setEditingServiceId((prevId) => (prevId === id ? null : id));
+  };
   useEffect(() => {
     getUserList();
   }, []);
@@ -261,7 +265,7 @@ export default function AdminPanelSection() {
             </button>
             {addService ? (
               <form
-                className="form"
+                className="admin__form"
                 onSubmit={(e) => {
                   e.preventDefault();
                   createService();
@@ -322,7 +326,68 @@ export default function AdminPanelSection() {
                     </h3>
                     <p>Price: {price}</p>
                     <p>Required Time: {required_time} min</p>
-                    <DeleteBtn action={removeService} id={id} />
+                    {editingServiceId !== id && (
+                      <DeleteBtn action={removeService} id={id} />
+                    )}
+                    <button
+                      className="btn"
+                      onClick={() => handleEditButton(id)}
+                    >
+                      Edit
+                    </button>
+                    {editingServiceId === id && (
+                      <div className="editService__container fadeIn">
+                        <form className="admin__form">
+                          <label htmlFor="service__name">
+                            Service Name
+                            <input
+                              type="text"
+                              value={name}
+                              className="input"
+                              id="service__name"
+                            />
+                          </label>
+                          <label htmlFor="service__price">
+                            Service Price
+                            <input
+                              type="number"
+                              value={price}
+                              className="input"
+                              id="service__price"
+                            />
+                          </label>
+                          <label htmlFor="service__time">
+                            Required Time
+                            <input
+                              type="number"
+                              value={required_time}
+                              className="input"
+                              id="service__time"
+                            />
+                          </label>
+                          <label htmlFor="serviceCategory">
+                            Category
+                            <select
+                              name="serviceCategory"
+                              id="serviceCategory"
+                              value={category_id}
+                            >
+                              <option value="1">Manicure</option>
+                              <option value="2">Pedicure</option>
+                            </select>
+                          </label>
+                          <div className="edit__actionButtons">
+                            <button className="btn">Submit</button>
+                            <button
+                              className="btn"
+                              onClick={() => setEditingServiceId(null)}
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                    )}
                   </li>
                 );
               })}
