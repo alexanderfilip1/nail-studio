@@ -52,7 +52,7 @@ export default function ReviewSection() {
 
   const createReview = async () => {
     try {
-      const req = await fetch("http://localhost:3000/api/createReview", {
+      const req = await fetch("http://localhost:3000/api/review/createReview", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
