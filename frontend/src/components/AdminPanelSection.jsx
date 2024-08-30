@@ -186,7 +186,7 @@ export default function AdminPanelSection() {
       const body = await req.json();
       if (body.status === "success") {
         setEditingServiceId(null);
-        getServices();
+        getServices(); 
       } else {
         console.log("Failed to update service:", body.message);
       }
