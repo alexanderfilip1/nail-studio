@@ -20,7 +20,7 @@ router.post("/createReview", async (req, res) => {
   const { rating, name, text } = req.body;
   try {
     await db.query(
-      "INSERT INTO reviews (name, review_text, stars) VALUES (?,?,?",
+      "INSERT INTO reviews (name, review_text, stars) VALUES (?,?,?)",
       [name, text, rating]
     );
     res
