@@ -10,34 +10,8 @@ export default function ReviewSection() {
   const [rating, setRating] = useState(0);
   const [reviewerName, setReviewerName] = useState("");
   const [reviewText, setReviewText] = useState("");
-
-  const reviews = [
-    {
-      id: 1,
-      name: "Alex",
-      review: "Very good service",
-      stars: 5,
-    },
-    {
-      id: 2,
-      name: "John",
-      review: "Nice",
-      stars: 4,
-    },
-    {
-      id: 3,
-      name: "Benjamin",
-      review: "Good service",
-      stars: 4,
-    },
-    {
-      id: 4,
-      name: "Alice",
-      review: "satisfied",
-      stars: 3,
-    },
-  ];
-
+  const [reviewNotification, setReviewNotification] = useState("");
+  const [reviews, setReviews] = useState([]);
   const settings = {
     dots: true,
     infinite: true,
@@ -50,9 +24,19 @@ export default function ReviewSection() {
     pauseOnHover: true,
   };
 
+  const getReviews = async () => {
+    try {
+      const req = await fetch("http://localhost:3000/api/reviews");
+      const body = await req.json();
+      console.log(body);
+      setReviews(body);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const createReview = async () => {
     try {
-      const req = await fetch("http://localhost:3000/api/review/createReview", {
+      const req = await fetch("http://localhost:3000/api/reviews", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
@@ -62,18 +46,25 @@ export default function ReviewSection() {
         }),
       });
       const body = await req.json();
+      setReviewNotification(body.message);
+      setRating(0);
+      getReviews();
       console.log(body);
     } catch (err) {
       console.log(err);
     }
   };
 
+  useState(() => {
+    getReviews();
+  }, []);
+
   return (
     <section className="review-section container bgBeige">
       <h1 className="section-title">Reviews</h1>
       <Slider {...settings}>
         {reviews.map((item) => {
-          const { id, name, review, stars } = item;
+          const { id, name, review_text, stars } = item;
           return (
             <div className="review-card" key={id}>
               <div className="review-header">
@@ -86,7 +77,7 @@ export default function ReviewSection() {
                     ))}
                 </div>
               </div>
-              <p className="review-text">{review}</p>
+              <p className="review-text">{review_text}</p>
             </div>
           );
         })}
@@ -102,7 +93,14 @@ export default function ReviewSection() {
       )}
       {leaveReview && (
         <>
-          <form action="" className="review__form">
+          <form
+            action=""
+            className="review__form"
+            onSubmit={(e) => {
+              e.preventDefault();
+              createReview();
+            }}
+          >
             <label htmlFor="name">
               <h3>Name</h3>
               <input
@@ -139,6 +137,7 @@ export default function ReviewSection() {
                   ))}
               </div>
             </label>
+            <p className="notification">{reviewNotification}</p>
             <div className="review__actionBtns">
               <button className="btn review__btn">Submit</button>
               <button
