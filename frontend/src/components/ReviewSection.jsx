@@ -11,34 +11,7 @@ export default function ReviewSection() {
   const [reviewerName, setReviewerName] = useState("");
   const [reviewText, setReviewText] = useState("");
   const [reviewNotification, setReviewNotification] = useState("");
-
-  const reviews = [
-    {
-      id: 1,
-      name: "Alex",
-      review: "Very good service",
-      stars: 5,
-    },
-    {
-      id: 2,
-      name: "John",
-      review: "Nice",
-      stars: 4,
-    },
-    {
-      id: 3,
-      name: "Benjamin",
-      review: "Good service",
-      stars: 4,
-    },
-    {
-      id: 4,
-      name: "Alice",
-      review: "satisfied",
-      stars: 3,
-    },
-  ];
-
+  const [reviews, setReviews] = useState([]);
   const settings = {
     dots: true,
     infinite: true,
@@ -51,6 +24,16 @@ export default function ReviewSection() {
     pauseOnHover: true,
   };
 
+  const getReviews = async () => {
+    try {
+      const req = await fetch("http://localhost:3000/api/reviews");
+      const body = await req.json();
+      console.log(body);
+      setReviews(body);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const createReview = async () => {
     try {
       const req = await fetch("http://localhost:3000/api/reviews", {
@@ -64,21 +47,24 @@ export default function ReviewSection() {
       });
       const body = await req.json();
       setReviewNotification(body.message);
-      setReviewerName("");
-      setReviewText("");
       setRating(0);
+      getReviews();
       console.log(body);
     } catch (err) {
       console.log(err);
     }
   };
 
+  useState(() => {
+    getReviews();
+  }, []);
+
   return (
     <section className="review-section container bgBeige">
       <h1 className="section-title">Reviews</h1>
       <Slider {...settings}>
         {reviews.map((item) => {
-          const { id, name, review, stars } = item;
+          const { id, name, review_text, stars } = item;
           return (
             <div className="review-card" key={id}>
               <div className="review-header">
@@ -91,7 +77,7 @@ export default function ReviewSection() {
                     ))}
                 </div>
               </div>
-              <p className="review-text">{review}</p>
+              <p className="review-text">{review_text}</p>
             </div>
           );
         })}
