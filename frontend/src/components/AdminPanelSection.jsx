@@ -208,6 +208,20 @@ export default function AdminPanelSection() {
     }
   };
 
+  const deleteReview = async (id) => {
+    try {
+      const req = await fetch(`http://localhost:3000/api/reviews/${id}`, {
+        method: "GET",
+        credentials: "include",
+      });
+      const body = await req.json();
+      console.log(body);
+      getReviews();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     getUserList();
   }, []);
@@ -488,6 +502,7 @@ export default function AdminPanelSection() {
                           <FaStar key={i} className="star filled" />
                         ))}
                     </div>
+                    <DeleteBtn action={deleteReview} id={id} />
                   </li>
                 );
               })}
