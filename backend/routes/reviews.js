@@ -14,6 +14,17 @@ router.get("/", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   const { id } = req.params;
+  try {
+    await db.query("DELETE FROM reviews WHERE id = ?", [id]);
+    res
+      .status(200)
+      .json({ status: "success", message: "Review successfully deleted" });
+  } catch (err) {
+    console.log(err);
+    res
+      .status(500)
+      .json({ status: "error", message: "Failed to delete the review" });
+  }
 });
 
 router.post("/", async (req, res) => {
