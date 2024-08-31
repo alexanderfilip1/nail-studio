@@ -211,7 +211,7 @@ export default function AdminPanelSection() {
   const deleteReview = async (id) => {
     try {
       const req = await fetch(`http://localhost:3000/api/reviews/${id}`, {
-        method: "GET",
+        method: "DELETE",
         credentials: "include",
       });
       const body = await req.json();
