@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../assets/css/AdminPanelSection.css";
 import DeleteBtn from "./DeleteBtn";
+import { FaStar } from "react-icons/fa";
 
 export default function AdminPanelSection() {
   const [activeSection, setActiveSection] = useState("Users");
@@ -19,6 +20,7 @@ export default function AdminPanelSection() {
   const [editPrice, setEditPrice] = useState(0);
   const [editRequiredTime, setEditRequiredTime] = useState(0);
   const [editCategoryId, setEditCategoryId] = useState(1);
+  const [reviewsList, setReviewsList] = useState([]);
 
   const handleSectionChange = (section) => {
     setActiveSection(section);
@@ -186,12 +188,23 @@ export default function AdminPanelSection() {
       const body = await req.json();
       if (body.status === "success") {
         setEditingServiceId(null);
-        getServices(); 
+        getServices();
       } else {
         console.log("Failed to update service:", body.message);
       }
     } catch (err) {
       console.log("Failed to update service:", err);
+    }
+  };
+
+  const getReviews = async () => {
+    try {
+      const req = await fetch("http://localhost:3000/api/reviews");
+      const body = await req.json();
+      console.log(body);
+      setReviewsList(body);
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -231,6 +244,17 @@ export default function AdminPanelSection() {
               }}
             >
               Services
+            </button>
+          </li>
+          <li className="admin__aside--item">
+            <button
+              className={activeSection === "Services" ? "active" : ""}
+              onClick={() => {
+                handleSectionChange("Reviews");
+                getReviews();
+              }}
+            >
+              Reviews
             </button>
           </li>
           <li className="admin__aside--item">
@@ -446,6 +470,29 @@ export default function AdminPanelSection() {
               })}
             </ul>
           </>
+        )}
+        {activeSection === "Reviews" && (
+          <div className="reviews__container fadeIn">
+            <h1>Reviews</h1>
+            <ul className="reviews__list">
+              {reviewsList.map((review) => {
+                const { id, name, review_text, stars } = review;
+                return (
+                  <li className="review__list--item list-item" key={id}>
+                    <h3>Name: {name}</h3>
+                    <b>Review Text: {review_text}</b>
+                    <div>
+                      {Array(stars)
+                        .fill()
+                        .map((_, i) => (
+                          <FaStar key={i} className="star filled" />
+                        ))}
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
         )}
         {activeSection === "Settings" && <h1>Settings</h1>}
       </article>
