@@ -16,7 +16,7 @@ router.delete("/:id", async (req, res) => {
   const { id } = req.params;
 });
 
-router.post("/createReview", async (req, res) => {
+router.post("/", async (req, res) => {
   const { rating, name, text } = req.body;
   try {
     await db.query(
