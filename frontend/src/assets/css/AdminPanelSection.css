@@ -140,3 +140,8 @@
   display: flex;
   gap: 1rem;
 }
+
+.review__list--item {
+  display: flex;
+  flex-direction: column;
+}
