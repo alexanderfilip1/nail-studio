@@ -7,7 +7,7 @@ const cors = require("cors");
 
 const corsOptions = {
   origin: "http://localhost:5173",
-  methods: ["GET", "POST"],
+  methods: ["GET", "POST", "DELETE", "PUT"],
   credentials: true,
 };
 
@@ -21,6 +21,10 @@ const userProfile = require("./routes/userProfile");
 const fetchUserAppointments = require("./routes/fetchUserAppointments");
 const cashbackHistory = require("./routes/cashbackHistory");
 const checkAdmin = require("./routes/checkAdmin");
+const users = require("./routes/users");
+const appointments = require("./routes/appointments");
+const services = require("./routes/services");
+const reviews = require("./routes/reviews");
 
 var app = express();
 
@@ -42,5 +46,9 @@ app.use("/api/getUser", userProfile);
 app.use("/api/fetchAppointments", fetchUserAppointments);
 app.use("/api/cashbackHistory", cashbackHistory);
 app.use("/api/checkAdmin", checkAdmin);
+app.use("/api/admin/users", users);
+app.use("/api/admin/appointments", appointments);
+app.use("/api/admin/services", services);
+app.use("/api/reviews", reviews);
 
 module.exports = app;
