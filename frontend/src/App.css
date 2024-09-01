@@ -24,6 +24,11 @@
   animation-duration: 1.2s;
 }
 
+.fadeIn {
+  animation: fadeIn;
+  animation-duration: 1.2s;
+}
+
 .bgBrown {
   background-image: radial-gradient(
     circle at center,
