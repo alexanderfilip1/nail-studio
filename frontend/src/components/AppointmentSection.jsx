@@ -27,6 +27,7 @@ export default function AppointmentSection() {
   const [cashbackUse, setCashbackUse] = useState(false);
   const [userBalance, setUserBalance] = useState(0);
   const [registerPopup, setRegisterPopup] = useState(false);
+  const [userAuthStatus, setUserAuthStatus] = useState(false);
 
 
   const navigate = useNavigate();
@@ -220,6 +221,7 @@ export default function AppointmentSection() {
     }
 
     if (authStatus.status === true && authStatus.user) {
+      setUserAuthStatus(true);
       getUserBalance(authStatus.user.email);
       setUserID(authStatus.user.id);
     } else if (authStatus.status === false) {
@@ -407,10 +409,12 @@ export default function AppointmentSection() {
                   <button
                     onClick={() => {
                       if (clientName && clientPhone) {
-                        if (authStatus.status === false) {
+                        console.log();
+                        if (userAuthStatus === false) {
                           setRegisterPopup(true);
+                        } else {
+                          registerAppointment();
                         }
-                        registerAppointment();
                       } else {
                         setError("Enter your name and phone number");
                       }

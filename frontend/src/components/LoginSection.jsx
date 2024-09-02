@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "../assets/css/Register.css";
 import AuthBtn from "./AuthBtn";
 import Loader from "./Loader";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginSection() {
   const [email, setEmail] = useState("");
@@ -9,6 +10,7 @@ export default function LoginSection() {
   const [error, setError] = useState("");
   const [notification, setNotification] = useState("");
   const [loader, setLoader] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     setError();
@@ -30,6 +32,9 @@ export default function LoginSection() {
       switch (body.status) {
         case "success":
           setNotification(body.message);
+          setTimeout(() => {
+            navigate("/");
+          }, 4000);
           setError("");
           break;
         case "error":
