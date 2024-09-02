@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import Appointment from "./pages/Appointment";
 import Profile from "./pages/Profile";
 import AdminPanel from "./pages/AdminPanel";
+import Gallery from "./pages/Gallery";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/book" element={<Appointment />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/admin" element={<AdminPanel />} />
+          <Route path="/gallery" element={<Gallery />} />
         </Routes>
       </BrowserRouter>
     </>
