@@ -24,6 +24,7 @@ export default function AdminPanelSection() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageDescription, setImageDescription] = useState("");
   const [imageUpload, setImageUpload] = useState(false);
+  const [galleryImages, setGalleryImages] = useState([]);
   const handleSectionChange = (section) => {
     setActiveSection(section);
   };
@@ -254,6 +255,19 @@ export default function AdminPanelSection() {
     }
   };
 
+  const getGalleryImages = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/api/admin/gallery", {
+        method: "GET",
+        credentials: "include",
+      });
+      const body = await response.json();
+      setGalleryImages(body);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     getUserList();
   }, []);
@@ -294,7 +308,7 @@ export default function AdminPanelSection() {
           </li>
           <li className="admin__aside--item">
             <button
-              className={activeSection === "Services" ? "active" : ""}
+              className={activeSection === "Reviews" ? "active" : ""}
               onClick={() => {
                 handleSectionChange("Reviews");
                 getReviews();
@@ -306,7 +320,10 @@ export default function AdminPanelSection() {
           <li className="admin__aside--item">
             <button
               className={activeSection === "Gallery" ? "active" : ""}
-              onClick={() => handleSectionChange("Gallery")}
+              onClick={() => {
+                handleSectionChange("Gallery");
+                getGalleryImages();
+              }}
             >
               Gallery
             </button>
@@ -593,6 +610,16 @@ export default function AdminPanelSection() {
                 <button className="btn btn-submit">Submit</button>
               </form>
             )}
+            <ul className="images__list">
+              {galleryImages.map((image) => {
+                const { id, link, image_description } = image;
+                return (
+                  <li className="images__list--item list-item" key={id}>
+                    <img src={link} alt={image_description} />
+                  </li>
+                );
+              })}
+            </ul>
           </div>
         )}
         {activeSection === "Settings" && <h1>Settings</h1>}
