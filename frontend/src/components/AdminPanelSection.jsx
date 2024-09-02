@@ -21,7 +21,7 @@ export default function AdminPanelSection() {
   const [editRequiredTime, setEditRequiredTime] = useState(0);
   const [editCategoryId, setEditCategoryId] = useState(1);
   const [reviewsList, setReviewsList] = useState([]);
-
+  const [selectedImage, setSelectedImage] = useState(null);
   const handleSectionChange = (section) => {
     setActiveSection(section);
   };
@@ -222,6 +222,35 @@ export default function AdminPanelSection() {
     }
   };
 
+  const handleImageSubmit = async (event) => {
+    event.preventDefault();
+
+    if (!selectedImage) {
+      alert("Please select a file before submitting.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("image", selectedImage);
+
+    try {
+      const response = await fetch("http://localhost:3000/api/admin/gallery", {
+        method: "POST",
+        body: formData,
+        credentials: "include",
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("File uploaded successfully:", data);
+      } else {
+        console.error("File upload failed:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
+  };
+
   useEffect(() => {
     getUserList();
   }, []);
@@ -269,6 +298,14 @@ export default function AdminPanelSection() {
               }}
             >
               Reviews
+            </button>
+          </li>
+          <li className="admin__aside--item">
+            <button
+              className={activeSection === "Gallery" ? "active" : ""}
+              onClick={() => handleSectionChange("Gallery")}
+            >
+              Gallery
             </button>
           </li>
           <li className="admin__aside--item">
@@ -507,6 +544,28 @@ export default function AdminPanelSection() {
                 );
               })}
             </ul>
+          </div>
+        )}
+        {activeSection === "Gallery" && (
+          <div className="gallery__container fadeIn">
+            <h1>Gallery</h1>
+            <form
+              className="gallery__form"
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleImageSubmit();
+              }}
+            >
+              <label htmlFor="image">
+                <input
+                  type="file"
+                  name="image"
+                  id="image"
+                  onChange={(e) => setSelectedImage(e.target.files[0])}
+                />
+                <button className="btn">Submit</button>
+              </label>
+            </form>
           </div>
         )}
         {activeSection === "Settings" && <h1>Settings</h1>}
