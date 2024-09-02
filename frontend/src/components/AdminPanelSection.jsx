@@ -225,6 +225,19 @@ export default function AdminPanelSection() {
     }
   };
 
+  const getGalleryImages = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/api/admin/gallery", {
+        method: "GET",
+        credentials: "include",
+      });
+      const body = await response.json();
+      setGalleryImages(body);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const handleImageSubmit = async (e) => {
     e.preventDefault();
 
@@ -246,25 +259,13 @@ export default function AdminPanelSection() {
 
       if (response.ok) {
         const data = await response.json();
+        getGalleryImages();
         console.log("File uploaded successfully:", data);
       } else {
         console.error("File upload failed:", response.statusText);
       }
     } catch (error) {
       console.error("Error uploading file:", error);
-    }
-  };
-
-  const getGalleryImages = async () => {
-    try {
-      const response = await fetch("http://localhost:3000/api/admin/gallery", {
-        method: "GET",
-        credentials: "include",
-      });
-      const body = await response.json();
-      setGalleryImages(body);
-    } catch (err) {
-      console.log(err);
     }
   };
 
@@ -279,6 +280,7 @@ export default function AdminPanelSection() {
       );
       const body = await response.json();
       console.log(body);
+      getGalleryImages();
     } catch (err) {
       console.log(err);
     }
@@ -631,7 +633,12 @@ export default function AdminPanelSection() {
                 const { id, link, image_description } = image;
                 return (
                   <li className="images__list--item list-item" key={id}>
-                    <img src={link} alt={image_description} />
+                    <img
+                      src={`http://localhost:3000${link}`}
+                      alt={image_description}
+                      className="gallery__image"
+                    />
+                    <p>{image_description}</p>
                     <DeleteBtn action={deleteGalleryImage} id={id} />
                   </li>
                 );
