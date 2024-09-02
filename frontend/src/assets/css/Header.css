@@ -1,0 +1,58 @@
+.header {
+  width: 100%;
+}
+
+.header__navbar {
+  padding: 1rem 0;
+}
+
+.header__logo {
+  margin-right: auto;
+}
+
+.header__navbar--list,
+.header__navbar {
+  display: flex;
+  align-items: center;
+}
+
+.header__navbar--list {
+  gap: 1rem;
+}
+
+.header__navbar--link {
+  font-size: 1.1rem;
+  color: #7f736c;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+
+.bookBtn {
+  background-color: #381d08;
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+}
+.header__burgerMenu {
+  display: none;
+  cursor: pointer;
+}
+.header__logo--img {
+  width: 70%;
+}
+
+@media screen and (max-width: 768px) {
+  .header__navbar--list {
+    display: none;
+  }
+  .header__burgerMenu {
+    display: block;
+  }
+  .header__logo--img {
+    width: 50%;
+  }
+}
+
+.no-scroll {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}

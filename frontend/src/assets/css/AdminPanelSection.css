@@ -1,0 +1,142 @@
+.admin__section {
+  width: 100%;
+  display: flex;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  gap: 20px;
+}
+
+.admin__aside {
+  width: 20%;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+}
+
+.admin__aside--list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.admin__aside--item {
+  margin-bottom: 10px;
+}
+
+.admin__aside--item button.active {
+  background-color: #ff6f61;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.admin__aside--item button {
+  width: 100%;
+  padding: 12px;
+  margin: 5px 0;
+  border: none;
+  background-color: #f0f0f0;
+  color: #333333;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.admin__aside--item button:hover {
+  background-color: #ff9e8a;
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.admin__content {
+  width: 75%;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  font-size: 18px;
+  color: #333333;
+  line-height: 1.6;
+}
+
+.admin__content h1 {
+  font-size: 28px;
+  color: #ff6f61;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.notAuthorized {
+  color: red;
+  text-align: center;
+  margin-top: 1rem;
+  text-shadow: 0.1rem 0.1rem 0.2rem yellow;
+}
+
+.list-item,
+.admin__form {
+  background-color: #cfcfcf;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  margin-bottom: 15px;
+  padding: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+}
+
+.close__btn {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  background: none;
+  border-radius: 100%;
+  color: red;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
+.search {
+  padding: 0.25rem;
+  border-radius: 1rem;
+  border: 0.1rem solid #212121;
+  display: flex;
+  justify-content: flex-end;
+  margin: 0 0 1rem auto;
+}
+
+.addServiceBtn {
+  display: flex;
+  margin: 0 0 1rem auto;
+}
+
+.admin__form {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin: 1rem;
+  border: 0.1rem solid #fff;
+}
+.admin__form label {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 50%;
+}
+
+.admin__form input,
+.admin__form select {
+  padding: 0.25rem;
+  border-radius: 0.5rem;
+  width: 100%;
+}
+
+.edit__actionButtons {
+  display: flex;
+  gap: 1rem;
+}
