@@ -268,6 +268,22 @@ export default function AdminPanelSection() {
     }
   };
 
+  const deleteGalleryImage = async (id) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/admin/gallery/${id}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        }
+      );
+      const body = await response.json();
+      console.log(body);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     getUserList();
   }, []);
@@ -616,6 +632,7 @@ export default function AdminPanelSection() {
                 return (
                   <li className="images__list--item list-item" key={id}>
                     <img src={link} alt={image_description} />
+                    <DeleteBtn action={deleteGalleryImage} id={id} />
                   </li>
                 );
               })}
