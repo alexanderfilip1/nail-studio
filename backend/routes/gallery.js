@@ -31,8 +31,7 @@ router.delete("/:id", async (req, res) => {
         .json({ status: "error", message: "Image not found" });
     }
 
-    // Fix: Make sure `relativeImagePath` is correctly assigned here
-    const relativeImagePath = image[0].link; // image[0] should contain the link
+    const relativeImagePath = image[0].link;
 
     const imagePath = path.join(__dirname, "..", "public", relativeImagePath);
 
