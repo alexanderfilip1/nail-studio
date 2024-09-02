@@ -22,6 +22,8 @@ export default function AdminPanelSection() {
   const [editCategoryId, setEditCategoryId] = useState(1);
   const [reviewsList, setReviewsList] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [imageDescription, setImageDescription] = useState("");
+  const [imageUpload, setImageUpload] = useState(false);
   const handleSectionChange = (section) => {
     setActiveSection(section);
   };
@@ -222,8 +224,8 @@ export default function AdminPanelSection() {
     }
   };
 
-  const handleImageSubmit = async (event) => {
-    event.preventDefault();
+  const handleImageSubmit = async (e) => {
+    e.preventDefault();
 
     if (!selectedImage) {
       alert("Please select a file before submitting.");
@@ -232,6 +234,7 @@ export default function AdminPanelSection() {
 
     const formData = new FormData();
     formData.append("image", selectedImage);
+    formData.append("description", imageDescription);
 
     try {
       const response = await fetch("http://localhost:3000/api/admin/gallery", {
@@ -549,23 +552,47 @@ export default function AdminPanelSection() {
         {activeSection === "Gallery" && (
           <div className="gallery__container fadeIn">
             <h1>Gallery</h1>
-            <form
-              className="gallery__form"
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleImageSubmit();
-              }}
+            <button
+              className="btn"
+              onClick={() => setImageUpload(!imageUpload)}
             >
-              <label htmlFor="image">
-                <input
-                  type="file"
-                  name="image"
-                  id="image"
-                  onChange={(e) => setSelectedImage(e.target.files[0])}
-                />
-                <button className="btn">Submit</button>
-              </label>
-            </form>
+              {imageUpload ? "Cancel" : "Upload an image"}
+            </button>
+            {imageUpload && (
+              <form
+                className="gallery__form"
+                onSubmit={(e) => handleImageSubmit(e)}
+              >
+                <div className="form-group">
+                  <label htmlFor="image" className="form-label">
+                    Upload Image
+                  </label>
+                  <input
+                    type="file"
+                    name="image"
+                    id="image"
+                    className="form-input"
+                    onChange={(e) => setSelectedImage(e.target.files[0])}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="description" className="form-label">
+                    Image Description
+                  </label>
+                  <input
+                    type="text"
+                    name="description"
+                    id="description"
+                    placeholder="Enter a brief description"
+                    className="form-input"
+                    onChange={(e) => setImageDescription(e.target.value)}
+                  />
+                </div>
+
+                <button className="btn btn-submit">Submit</button>
+              </form>
+            )}
           </div>
         )}
         {activeSection === "Settings" && <h1>Settings</h1>}
