@@ -204,3 +204,15 @@
 .gallery__form {
   margin-bottom: 1rem;
 }
+
+.gallery__image {
+  width: 20%;
+  height: auto;
+  border-radius: 1rem;
+}
+
+.images__list--item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
