@@ -70,7 +70,7 @@ router.post("/", async (req, res) => {
     }
 
     let imageFile = req.files.image;
-    const imageDescription = req.body.image_description;
+    const imageDescription = req.body.description;
 
     const imageName = Date.now() + path.extname(imageFile.name);
 
