@@ -90,9 +90,11 @@ router.post("/", async (req, res) => {
           .json({ status: "error", message: "Failed to upload the image" });
       }
 
+      const imagePath = `http://localhost:3000/images/${imageName}`;
+
       await db.query(
         "INSERT INTO gallery_images (link, image_description) VALUES (?, ?)",
-        [imageName, imageDescription]
+        [imagePath, imageDescription]
       );
 
       res
