@@ -31,13 +31,9 @@ router.delete("/:id", async (req, res) => {
         .json({ status: "error", message: "Image not found" });
     }
 
-    const imagePath = path.join(
-      __dirname,
-      "..",
-      "public",
-      "images",
-      image[0].link
-    );
+    const relativeImagePath = image[0].link;
+
+    const imagePath = path.join(__dirname, "..", "public", relativeImagePath);
 
     fs.unlink(imagePath, async (err) => {
       if (err) {
@@ -54,7 +50,7 @@ router.delete("/:id", async (req, res) => {
         .json({ status: "success", message: "Image successfully deleted" });
     });
   } catch (err) {
-    console.log(err);
+    console.error("Error:", err);
     res
       .status(500)
       .json({ status: "error", message: "Failed to delete the image" });
@@ -90,11 +86,11 @@ router.post("/", async (req, res) => {
           .json({ status: "error", message: "Failed to upload the image" });
       }
 
-      const imagePath = `http://localhost:3000/images/${imageName}`;
+      const relativeImagePath = `/images/${imageName}`;
 
       await db.query(
         "INSERT INTO gallery_images (link, image_description) VALUES (?, ?)",
-        [imagePath, imageDescription]
+        [relativeImagePath, imageDescription]
       );
 
       res
