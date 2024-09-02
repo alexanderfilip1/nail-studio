@@ -4,6 +4,7 @@ const db = require("../config/db");
 const path = require("path");
 const fs = require("fs");
 const fileUpload = require("express-fileupload");
+const secureAdmin = require("../middlewares/secureAdmin");
 
 router.use(fileUpload());
 
@@ -17,7 +18,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", secureAdmin, async (req, res) => {
   const { id } = req.params;
   try {
     const [image] = await db.query(
@@ -57,7 +58,7 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", secureAdmin, async (req, res) => {
   try {
     if (!req.files || Object.keys(req.files).length === 0) {
       return res
