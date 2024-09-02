@@ -216,3 +216,13 @@
   align-items: center;
   gap: 1rem;
 }
+
+@media (max-width: 768px) {
+  .admin__section {
+    flex-direction: column;
+  }
+  .admin__aside,
+  .admin__content {
+    width: 100%;
+  }
+}
