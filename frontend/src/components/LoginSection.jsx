@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../assets/css/Register.css";
+import "../assets/css/Login.css";
 import AuthBtn from "./AuthBtn";
 import Loader from "./Loader";
 import { useNavigate } from "react-router-dom";
@@ -31,7 +31,7 @@ export default function LoginSection() {
       console.log(body);
       switch (body.status) {
         case "success":
-          setNotification(body.message);
+          setNotification(`${body.message}. Redirecting...`);
           setTimeout(() => {
             navigate("/");
           }, 4000);
@@ -56,7 +56,7 @@ export default function LoginSection() {
   return (
     <>
       {loader && <Loader />}
-      <section className="register__section">
+      <section className="login__section">
         <form
           className="form"
           onSubmit={(e) => {
