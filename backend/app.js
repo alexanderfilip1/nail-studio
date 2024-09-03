@@ -29,6 +29,7 @@ const gallery = require("./routes/gallery");
 const visits = require("./routes/visits");
 const forgotPassword = require("./routes/forgotPassword");
 const resetPassword = require("./routes/resetPassword");
+const bulkEmail = require("./routes/bulkEmail");
 
 var app = express();
 
@@ -59,5 +60,6 @@ app.use("/api/log-visit", visits);
 
 app.use("/api", forgotPassword);
 app.use("/api", resetPassword);
+app.use("/api/admin", bulkEmail);
 
 module.exports = app;
