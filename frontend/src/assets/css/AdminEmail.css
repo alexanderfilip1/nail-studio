@@ -1,0 +1,65 @@
+:root {
+  font-size: 1rem;
+}
+
+.admin-email-container {
+  max-width: 50rem;
+  margin: 0 auto;
+  padding: 1.25rem;
+  background-color: #f9f9f9;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+}
+
+.admin-email-container h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 1.25rem;
+  font-size: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: #555;
+}
+
+.form-group input[type="text"],
+.form-group textarea,
+.ql-container {
+  width: 100%;
+  padding: 0.625rem;
+  border: 0.0625rem solid #ccc;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  color: #333;
+}
+
+.form-group input[type="text"]:focus,
+.form-group textarea:focus,
+.ql-container:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.notification,
+.error {
+  text-align: center;
+  font-size: 1rem;
+  margin-top: 1.25rem;
+}
+
+@media (max-width: 768px) {
+  .admin-email-container {
+    padding: 0.9375rem;
+  }
+
+  .admin-email-container h2 {
+    font-size: 1.25rem;
+  }
+}
