@@ -9,6 +9,8 @@ import Appointment from "./pages/Appointment";
 import Profile from "./pages/Profile";
 import AdminPanel from "./pages/AdminPanel";
 import Gallery from "./pages/Gallery";
+import ResetPassword from "./pages/ResetPassword";
+import ForgotPassword from "./pages/ForgotPassword";
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/admin" element={<AdminPanel />} />
           <Route path="/gallery" element={<Gallery />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
         </Routes>
       </BrowserRouter>
     </>

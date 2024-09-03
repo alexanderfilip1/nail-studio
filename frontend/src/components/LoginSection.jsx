@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../assets/css/Login.css";
 import AuthBtn from "./AuthBtn";
-import Loader from "./Loader";
+import Loader from "../components/Loader";
 import { useNavigate } from "react-router-dom";
 
 export default function LoginSection() {
@@ -53,6 +53,10 @@ export default function LoginSection() {
     }
   };
 
+  const handleForgotPasswordClick = () => {
+    navigate("/forgot-password");
+  };
+
   return (
     <>
       {loader && <Loader />}
@@ -86,6 +90,9 @@ export default function LoginSection() {
               }}
             />
           </label>
+          <a className="forgotPassword" onClick={handleForgotPasswordClick}>
+            Forgot password?
+          </a>
           <p className={error ? "error" : "hide"}>{error}</p>
           <p className={notification ? "notification" : "hide"}>
             {notification}
