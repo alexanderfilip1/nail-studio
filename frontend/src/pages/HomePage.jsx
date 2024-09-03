@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "../components/Header";
 import HeroSection from "../components/HeroSection";
 import AboutSection from "../components/AboutSection";
@@ -14,6 +14,21 @@ export default function HomePage() {
   const authStatus = useAuthToken();
 
   console.log(authStatus);
+
+  const logVisit = async () => {
+    try {
+      await fetch("http://localhost:3000/api/log-visit", {
+        method: "POST",
+        credentials: "include",
+      });
+    } catch (err) {
+      console.log("Error logging visit:", err);
+    }
+  };
+
+  useEffect(() => {
+    logVisit();
+  }, []);
 
   return (
     <>
