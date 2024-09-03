@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import "../assets/css/AdminPanelSection.css";
 import DeleteBtn from "./DeleteBtn";
 import { FaStar } from "react-icons/fa";
+import UserIcon from "./UserIcon";
 
 export default function AdminPanelSection() {
-  const [activeSection, setActiveSection] = useState("Users");
+  const [activeSection, setActiveSection] = useState("Statistic");
   const [userList, setUserList] = useState([]);
   const [appointments, setAppointments] = useState([]);
   const [originalAppointments, setOriginalAppointments] = useState([]);
@@ -25,6 +26,11 @@ export default function AdminPanelSection() {
   const [imageDescription, setImageDescription] = useState("");
   const [imageUpload, setImageUpload] = useState(false);
   const [galleryImages, setGalleryImages] = useState([]);
+  const [visitStats, setVisitStats] = useState({
+    last24h: 0,
+    last7d: 0,
+    last30d: 0,
+  });
   const handleSectionChange = (section) => {
     setActiveSection(section);
   };
@@ -286,8 +292,21 @@ export default function AdminPanelSection() {
     }
   };
 
+  const getVisitStats = async () => {
+    try {
+      const res = await fetch("http://localhost:3000/api/log-visit", {
+        method: "GET",
+        credentials: "include",
+      });
+      const data = await res.json();
+      setVisitStats(data);
+    } catch (err) {
+      console.log("Error fetching visit stats:", err);
+    }
+  };
+
   useEffect(() => {
-    getUserList();
+    getVisitStats();
   }, []);
 
   return (
@@ -296,8 +315,19 @@ export default function AdminPanelSection() {
         <ul className="admin__aside--list">
           <li className="admin__aside--item">
             <button
+              className={activeSection === "Statistic" ? "active" : ""}
+              onClick={() => handleSectionChange("Statistic")}
+            >
+              Statistic
+            </button>
+          </li>
+          <li className="admin__aside--item">
+            <button
               className={activeSection === "Users" ? "active" : ""}
-              onClick={() => handleSectionChange("Users")}
+              onClick={() => {
+                handleSectionChange("Users");
+                getUserList();
+              }}
             >
               Users
             </button>
@@ -346,19 +376,11 @@ export default function AdminPanelSection() {
               Gallery
             </button>
           </li>
-          <li className="admin__aside--item">
-            <button
-              className={activeSection === "Settings" ? "active" : ""}
-              onClick={() => handleSectionChange("Settings")}
-            >
-              Settings
-            </button>
-          </li>
         </ul>
       </aside>
       <article className="admin__content">
         {activeSection === "Users" && (
-          <>
+          <div className="fadeIn">
             <h1>
               All Users{userList.length > 0 ? `(${userList.length})` : ""}
             </h1>
@@ -378,10 +400,10 @@ export default function AdminPanelSection() {
                 );
               })}
             </ul>
-          </>
+          </div>
         )}
         {activeSection === "Appointments" && (
-          <>
+          <div className="fadeIn">
             <h1>
               All Appointments{" "}
               {appointments.length > 0 ? `(${appointments.length})` : ""}
@@ -405,10 +427,10 @@ export default function AdminPanelSection() {
                 );
               })}
             </ul>
-          </>
+          </div>
         )}
         {activeSection === "Services" && (
-          <>
+          <div className="fadeIn">
             <h1>All Services</h1>
             <button
               className="btn addServiceBtn"
@@ -558,7 +580,7 @@ export default function AdminPanelSection() {
                 );
               })}
             </ul>
-          </>
+          </div>
         )}
         {activeSection === "Reviews" && (
           <div className="reviews__container fadeIn">
@@ -646,7 +668,40 @@ export default function AdminPanelSection() {
             </ul>
           </div>
         )}
-        {activeSection === "Settings" && <h1>Settings</h1>}
+        {activeSection === "Statistic" && (
+          <div className="fadeIn">
+            <h1 className="statistic__title">Statistics</h1>
+            <ul className="statistic__list">
+              <li className="list-item statistic--item">
+                <h2 className="statistic__heading">Last 24H</h2>
+                <div className="statistic__visitors">
+                  <UserIcon style={{ color: "#212121", marginRight: "10px" }} />
+                  <span className="statistic__count">
+                    {visitStats.last24h} Visitors
+                  </span>
+                </div>
+              </li>
+              <li className="list-item statistic--item">
+                <h2 className="statistic__heading">Last 7 Days</h2>
+                <div className="statistic__visitors">
+                  <UserIcon style={{ color: "#212121", marginRight: "10px" }} />
+                  <span className="statistic__count">
+                    {visitStats.last7d} Visitors
+                  </span>
+                </div>
+              </li>
+              <li className="list-item statistic--item">
+                <h2 className="statistic__heading">Last 30 Days</h2>
+                <div className="statistic__visitors">
+                  <UserIcon style={{ color: "#212121", marginRight: "10px" }} />
+                  <span className="statistic__count">
+                    {visitStats.last30d} Visitors
+                  </span>
+                </div>
+              </li>
+            </ul>
+          </div>
+        )}
       </article>
     </section>
   );
