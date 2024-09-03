@@ -27,6 +27,8 @@ const services = require("./routes/services");
 const reviews = require("./routes/reviews");
 const gallery = require("./routes/gallery");
 const visits = require("./routes/visits");
+const forgotPassword = require("./routes/forgotPassword");
+const resetPassword = require("./routes/resetPassword");
 
 var app = express();
 
@@ -54,5 +56,8 @@ app.use("/api/admin/services", services);
 app.use("/api/reviews", reviews);
 app.use("/api/admin/gallery", gallery);
 app.use("/api/log-visit", visits);
+
+app.use("/api", forgotPassword);
+app.use("/api", resetPassword);
 
 module.exports = app;
