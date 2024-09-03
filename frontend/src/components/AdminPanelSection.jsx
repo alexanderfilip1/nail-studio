@@ -3,6 +3,7 @@ import "../assets/css/AdminPanelSection.css";
 import DeleteBtn from "./DeleteBtn";
 import { FaStar } from "react-icons/fa";
 import UserIcon from "./UserIcon";
+import AdminEmail from "./AdminEmail";
 
 export default function AdminPanelSection() {
   const [activeSection, setActiveSection] = useState("Statistic");
@@ -376,6 +377,17 @@ export default function AdminPanelSection() {
               Gallery
             </button>
           </li>
+          <li className="admin__aside--item">
+            <button
+              className={activeSection === "Email" ? "active" : ""}
+              onClick={() => {
+                handleSectionChange("Email");
+                getGalleryImages();
+              }}
+            >
+              Email
+            </button>
+          </li>
         </ul>
       </aside>
       <article className="admin__content">
@@ -696,6 +708,7 @@ export default function AdminPanelSection() {
             </ul>
           </div>
         )}
+        {activeSection === "Email" && <AdminEmail />}
       </article>
     </section>
   );
