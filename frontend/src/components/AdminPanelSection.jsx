@@ -380,7 +380,7 @@ export default function AdminPanelSection() {
       </aside>
       <article className="admin__content">
         {activeSection === "Users" && (
-          <>
+          <div className="fadeIn">
             <h1>
               All Users{userList.length > 0 ? `(${userList.length})` : ""}
             </h1>
@@ -400,10 +400,10 @@ export default function AdminPanelSection() {
                 );
               })}
             </ul>
-          </>
+          </div>
         )}
         {activeSection === "Appointments" && (
-          <>
+          <div className="fadeIn">
             <h1>
               All Appointments{" "}
               {appointments.length > 0 ? `(${appointments.length})` : ""}
@@ -427,10 +427,10 @@ export default function AdminPanelSection() {
                 );
               })}
             </ul>
-          </>
+          </div>
         )}
         {activeSection === "Services" && (
-          <>
+          <div className="fadeIn">
             <h1>All Services</h1>
             <button
               className="btn addServiceBtn"
@@ -580,7 +580,7 @@ export default function AdminPanelSection() {
                 );
               })}
             </ul>
-          </>
+          </div>
         )}
         {activeSection === "Reviews" && (
           <div className="reviews__container fadeIn">
@@ -669,7 +669,7 @@ export default function AdminPanelSection() {
           </div>
         )}
         {activeSection === "Statistic" && (
-          <>
+          <div className="fadeIn">
             <h1 className="statistic__title">Statistics</h1>
             <ul className="statistic__list">
               <li className="list-item statistic--item">
@@ -700,7 +700,7 @@ export default function AdminPanelSection() {
                 </div>
               </li>
             </ul>
-          </>
+          </div>
         )}
       </article>
     </section>
