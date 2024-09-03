@@ -26,6 +26,7 @@ const appointments = require("./routes/appointments");
 const services = require("./routes/services");
 const reviews = require("./routes/reviews");
 const gallery = require("./routes/gallery");
+const visits = require("./routes/visits");
 
 var app = express();
 
@@ -52,5 +53,6 @@ app.use("/api/admin/appointments", appointments);
 app.use("/api/admin/services", services);
 app.use("/api/reviews", reviews);
 app.use("/api/admin/gallery", gallery);
+app.use("/api/log-visit", visits);
 
 module.exports = app;
