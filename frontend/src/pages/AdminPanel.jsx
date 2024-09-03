@@ -3,6 +3,7 @@ import Header from "../components/Header";
 import AdminPanelSection from "../components/AdminPanelSection";
 import useAuthToken from "../hooks/useAuthToken";
 import { useNavigate } from "react-router-dom";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 
 export default function AdminPanel() {
   const [mobileHeader, setMobileHeader] = useState(false);
@@ -10,7 +11,7 @@ export default function AdminPanel() {
   const [countdown, setCountdown] = useState(3);
   const userStatus = useAuthToken();
   const navigate = useNavigate();
-
+  useDocumentTitle("Admin Panel");
   const checkIfAdmin = async () => {
     try {
       const req = await fetch("http://localhost:3000/api/checkAdmin", {

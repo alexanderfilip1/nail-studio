@@ -7,9 +7,11 @@ import PriceListSection from "../components/PriceListSection";
 import Footer from "../components/Footer";
 import useAuthToken from "../hooks/useAuthToken.jsx";
 import ReviewSection from "../components/ReviewSection.jsx";
+import { useDocumentTitle } from "../hooks/useDocumentTitle.jsx";
 
 export default function HomePage() {
   const [mobileHeader, setMobileHeader] = useState(false);
+  useDocumentTitle("Homepage");
 
   const authStatus = useAuthToken();
 
