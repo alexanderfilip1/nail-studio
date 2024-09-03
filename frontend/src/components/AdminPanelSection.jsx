@@ -676,27 +676,21 @@ export default function AdminPanelSection() {
                 <h2 className="statistic__heading">Last 24H</h2>
                 <div className="statistic__visitors">
                   <UserIcon style={{ color: "#212121", marginRight: "10px" }} />
-                  <span className="statistic__count">
-                    {visitStats.last24h} Visitors
-                  </span>
+                  <span className="statistic__count">{visitStats.last24h}</span>
                 </div>
               </li>
               <li className="list-item statistic--item">
                 <h2 className="statistic__heading">Last 7 Days</h2>
                 <div className="statistic__visitors">
                   <UserIcon style={{ color: "#212121", marginRight: "10px" }} />
-                  <span className="statistic__count">
-                    {visitStats.last7d} Visitors
-                  </span>
+                  <span className="statistic__count">{visitStats.last7d}</span>
                 </div>
               </li>
               <li className="list-item statistic--item">
                 <h2 className="statistic__heading">Last 30 Days</h2>
                 <div className="statistic__visitors">
                   <UserIcon style={{ color: "#212121", marginRight: "10px" }} />
-                  <span className="statistic__count">
-                    {visitStats.last30d} Visitors
-                  </span>
+                  <span className="statistic__count">{visitStats.last30d}</span>
                 </div>
               </li>
             </ul>
