@@ -1,43 +1,52 @@
-var express = require("express");
-var router = express.Router();
+const express = require("express");
+const router = express.Router();
 const db = require("../config/db");
-const secureAdmin = require("../middlewares/secureAdmin");
 
 router.post("/", async (req, res) => {
   const ip = req.ip;
 
-  const result = await db.query(
-    `SELECT COUNT(*) FROM visits WHERE ip_address = $1 AND visited_at > NOW() - INTERVAL '24 hours'`,
-    [ip]
-  );
+  try {
+    const result = await db.query(
+      `SELECT COUNT(*) AS count FROM visits WHERE ip_address = ? AND visited_at > NOW() - INTERVAL 1 DAY`,
+      [ip]
+    );
 
-  if (result.rows[0].count === "0") {
-    await db.query(`INSERT INTO visits (ip_address) VALUES ($1)`, [ip]);
+    if (result[0][0].count === 0) {
+      await db.query(`INSERT INTO visits (ip_address) VALUES (?)`, [ip]);
+    }
+
+    res.status(200).send({ status: "success" });
+  } catch (err) {
+    console.error("Error executing query:", err);
+    res.status(500).send({ status: "error", message: "Internal Server Error" });
   }
-
-  res.status(200).send({ status: "success" });
 });
 
-router.get("/", secureAdmin, async (req, res) => {
+router.get("/", async (req, res) => {
   const stats = {};
 
-  stats.last24h = await db.query(
-    `SELECT COUNT(DISTINCT ip_address) FROM visits WHERE visited_at > NOW() - INTERVAL '24 hours'`
-  );
+  try {
+    const last24h = await db.query(
+      `SELECT COUNT(DISTINCT ip_address) AS count FROM visits WHERE visited_at > NOW() - INTERVAL 1 DAY`
+    );
+    stats.last24h = last24h[0][0].count;
 
-  stats.last7d = await db.query(
-    `SELECT COUNT(DISTINCT ip_address) FROM visits WHERE visited_at > NOW() - INTERVAL '7 days'`
-  );
+    const last7d = await db.query(
+      `SELECT COUNT(DISTINCT ip_address) AS count FROM visits WHERE visited_at > NOW() - INTERVAL 7 DAY`
+    );
+    stats.last7d = last7d[0][0].count;
 
-  stats.last30d = await db.query(
-    `SELECT COUNT(DISTINCT ip_address) FROM visits WHERE visited_at > NOW() - INTERVAL '30 days'`
-  );
+    const last30d = await db.query(
+      `SELECT COUNT(DISTINCT ip_address) AS count FROM visits WHERE visited_at > NOW() - INTERVAL 30 DAY`
+    );
 
-  res.status(200).send({
-    last24h: stats.last24h.rows[0].count,
-    last7d: stats.last7d.rows[0].count,
-    last30d: stats.last30d.rows[0].count,
-  });
+    stats.last30d = last30d[0][0].count;
+
+    res.status(200).send(stats);
+  } catch (err) {
+    console.error("Error executing query:", err);
+    res.status(500).send({ status: "error", message: "Internal Server Error" });
+  }
 });
 
 module.exports = router;
