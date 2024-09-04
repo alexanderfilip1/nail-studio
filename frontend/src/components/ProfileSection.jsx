@@ -141,64 +141,73 @@ export default function ProfileSection() {
                   : "See Cashback History"}
               </button>
             </div>
-            {appointmentsHistory && (
-              <ul className="appointment__history--list fadeIn">
-                {appointments.map((item) => {
-                  const {
-                    id,
-                    services,
-                    start_datetime,
-                    total_price,
-                    cashback_used,
-                  } = item;
+            {appointmentsHistory &&
+              (appointments.length > 0 ? (
+                <ul className="appointment__history--list fadeIn">
+                  {appointments.map((item) => {
+                    const {
+                      id,
+                      services,
+                      start_datetime,
+                      total_price,
+                      cashback_used,
+                    } = item;
 
-                  const formattedDate = formatDate(start_datetime);
+                    const formattedDate = formatDate(start_datetime);
 
-                  return (
-                    <li className="appointment__history--item bgBeige" key={id}>
-                      <h2 className="service__title">
-                        Service:{" "}
-                        <span className="service__name">
-                          {services.join(", ")}
-                        </span>
-                      </h2>
+                    return (
+                      <li
+                        className="appointment__history--item bgBeige"
+                        key={id}
+                      >
+                        <h2 className="service__title">
+                          Service:{" "}
+                          <span className="service__name">
+                            {services.join(", ")}
+                          </span>
+                        </h2>
 
-                      <p>Total Price: {total_price} LEI</p>
-                      <p>Cashback Used: {cashback_used} LEI</p>
-                      <p>Start Time: {formattedDate}</p>
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
+                        <p>Total Price: {total_price} LEI</p>
+                        <p>Cashback Used: {cashback_used} LEI</p>
+                        <p>Start Time: {formattedDate}</p>
+                      </li>
+                    );
+                  })}
+                </ul>
+              ) : (
+                <h2>No appointment history available.</h2>
+              ))}
 
-            {cashbackHistory && (
-              <ul className="appointment__history--list fadeIn">
-                {cashback.map((item) => {
-                  const { id, cashback, usage_date, op } = item;
-                  const formattedDate = formatDate(usage_date);
+            {cashbackHistory &&
+              (cashback.length > 0 ? (
+                <ul className="appointment__history--list fadeIn">
+                  {cashback.map((item) => {
+                    const { id, cashback, usage_date, op } = item;
+                    const formattedDate = formatDate(usage_date);
 
-                  const cashbackClass =
-                    op === "+" ? "cashback-positive" : "cashback-negative";
+                    const cashbackClass =
+                      op === "+" ? "cashback-positive" : "cashback-negative";
 
-                  return (
-                    <li
-                      className={`appointment__history--item ${cashbackClass}`}
-                      key={id}
-                    >
-                      <h2 className="service__title">
-                        Cashback Amount:{" "}
-                        <span className="service__name">
-                          {op}
-                          {cashback}
-                        </span>
-                      </h2>
-                      <p>Usage date: {formattedDate}</p>
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
+                    return (
+                      <li
+                        className={`appointment__history--item ${cashbackClass}`}
+                        key={id}
+                      >
+                        <h2 className="service__title">
+                          Cashback Amount:{" "}
+                          <span className="service__name">
+                            {op}
+                            {cashback}
+                          </span>
+                        </h2>
+                        <p>Usage date: {formattedDate}</p>
+                      </li>
+                    );
+                  })}
+                </ul>
+              ) : (
+                <h2>No cashback history available.</h2>
+              ))}
           </>
         ) : (
           <div className="notLoggedIn">
