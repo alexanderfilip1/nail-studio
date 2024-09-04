@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 const db = require("../config/db");
 const calculateAppointmentTime = require("../middlewares/calculateAppointmentTime");
+const sendAppointment = require("../middlewares/sendAppointment"); // Ensure this path is correct
 
 router.post("/", async function (req, res, next) {
   const {
@@ -25,7 +26,6 @@ router.post("/", async function (req, res, next) {
     const [[user]] = await db.query("SELECT * FROM users WHERE id = ?", [
       userID,
     ]);
-    console.log(user);
     const servicePrices = await Promise.all(
       service.map(async (item) => {
         const [priceData] = await db.query(
@@ -112,6 +112,23 @@ router.post("/", async function (req, res, next) {
         userID,
       ]);
     }
+
+    const telegramMessage = `
+  <b>📝 New Appointment Registered 📝</b>
+  <b>Name:</b> ${name}
+  <b>Phone:</b> <code>${phone}</code>
+  <b>Date:</b> ${date}
+  <b>Time:</b> ${time}
+  <b>Services:</b> ${service.join(", ")}
+  <b>Total Price:</b> ${totalPrice} LEI
+  <b>Cashback Used:</b> ${cashbackUsed} LEI
+  <b>Final Price:</b> ${finalPrice} LEI
+  <b>Appointment ID:</b> ${appointmentId}
+  <b>Starts:</b> ${fullDate}
+  <b>Ends:</b> ${endTime}
+`.trim();
+
+    await sendAppointment(telegramMessage);
 
     res.status(201).json({
       status: "success",
