@@ -13,22 +13,41 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+const sendEmailWithDelay = async (
+  users,
+  subject,
+  htmlContent,
+  delay = 1000
+) => {
+  for (const user of users) {
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: user.email,
+      subject: subject,
+      html: htmlContent,
+    };
+
+    try {
+      await transporter.sendMail(mailOptions);
+      console.log(`Email sent to ${user.email}`);
+    } catch (err) {
+      if (err.responseCode === 550) {
+        console.log(`Skipping non-existent email: ${user.email}`);
+      } else {
+        console.error(`Failed to send email to ${user.email}:`, err);
+      }
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, delay));
+  }
+};
+
 router.post("/send-bulk-email", async (req, res) => {
   const { subject, htmlContent } = req.body;
 
   try {
     const [users] = await db.query("SELECT email FROM users");
-
-    for (const user of users) {
-      const mailOptions = {
-        from: process.env.EMAIL_USER,
-        to: user.email,
-        subject: subject,
-        html: htmlContent,
-      };
-
-      await transporter.sendMail(mailOptions);
-    }
+    await sendEmailWithDelay(users, subject, htmlContent, 1000);
 
     res
       .status(200)
