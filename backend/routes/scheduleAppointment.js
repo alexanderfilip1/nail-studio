@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 const db = require("../config/db");
 const calculateAppointmentTime = require("../middlewares/calculateAppointmentTime");
-const sendAppointment = require("../middlewares/sendAppointment"); // Ensure this path is correct
+const sendAppointment = require("../middlewares/sendAppointment");
 
 router.post("/", async function (req, res, next) {
   const {
