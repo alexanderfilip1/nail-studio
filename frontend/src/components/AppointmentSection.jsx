@@ -29,7 +29,6 @@ export default function AppointmentSection() {
   const [registerPopup, setRegisterPopup] = useState(false);
   const [userAuthStatus, setUserAuthStatus] = useState(false);
 
-
   const navigate = useNavigate();
 
   const PriceList = ({ title, prices, categoryId }) => {
@@ -274,10 +273,9 @@ export default function AppointmentSection() {
         />
       )}
       <section className="appointment__section container">
-        <h1 className="appointment__section--title">Booking</h1>
         {currentStep === 1 && (
           <div className="step step-1 fadeInLeftBig">
-            <h1>Time & Date</h1>
+            <h2>Time & Date</h2>
             <div className="calendar-container">
               <Calendar
                 onChange={(selectedDate) => {
@@ -334,7 +332,7 @@ export default function AppointmentSection() {
         )}
         {currentStep === 2 && (
           <div className="step step-2 fadeInRightBig">
-            <h1>Service</h1>
+            <h2>Service</h2>
             <div className="service__choose">
               <>
                 <PriceList title="Manichiură" prices={prices} categoryId={1} />
@@ -354,7 +352,7 @@ export default function AppointmentSection() {
         )}
         {currentStep === 3 && (
           <div className="step step-3 fadeInRightBig">
-            <h1>Client Data</h1>
+            <h2>Client Data</h2>
             <div className="client-info">
               <label>
                 Full Name:
