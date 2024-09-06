@@ -13,12 +13,6 @@
   padding: 2rem;
 }
 
-.appointment__section--title {
-  font-size: 3rem;
-  margin-bottom: 1.5rem;
-  color: #381d08;
-}
-
 .step {
   display: none;
 }
