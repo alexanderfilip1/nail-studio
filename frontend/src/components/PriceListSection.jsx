@@ -8,13 +8,13 @@ const PriceList = ({ title, prices, categoryId }) => {
 
   return (
     <ul className="priceList__list">
-      <h1 className="priceList__list--title">{title}</h1>
+      <h3 className="priceList__list--title">{title}</h3>
       {filteredPrices.length > 0 ? (
         filteredPrices.map(({ id, name, price }) => (
           <li className="priceList__item" key={id}>
-            <h1>
+            <p>
               {name} - <span>{price} LEI</span>
-            </h1>
+            </p>
           </li>
         ))
       ) : (
