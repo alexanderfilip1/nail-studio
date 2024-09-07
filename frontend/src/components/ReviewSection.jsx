@@ -60,7 +60,10 @@ export default function ReviewSection() {
   }, []);
 
   return (
-    <section className="review-section container bgBeige">
+    <section
+      className="review-section container bgBeige"
+      style={{ paddingTop: "1.5rem" }}
+    >
       <h1 className="section-title">Reviews</h1>
       <Slider {...settings}>
         {reviews.map((item) => {
