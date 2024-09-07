@@ -74,8 +74,20 @@
 }
 .review__actionBtns {
   display: flex;
-  justify-content: space-between;
+  gap: 1.5rem;
+  justify-content: center;
 }
 .review__btn {
-  width: 48%;
+  width: 20%;
+}
+
+@media screen and (max-width: 768px) {
+  .review__btn {
+    width: 48%;
+  }
+}
+@media screen and (min-width: 768px) and (max-width: 992px) {
+  .review__btn {
+    width: 35%;
+  }
 }
