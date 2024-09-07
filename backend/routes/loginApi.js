@@ -32,9 +32,12 @@ router.post("/", validate(loginSchema), async function (req, res, next) {
 
       res.status(200).json({ status: "success", message: "Logged in!" });
     } else {
-      res.status(404).json({ status: "error", message: "User not found" });
+      res
+        .status(404)
+        .json({ status: "error", message: "Incorrect credentials" });
     }
   } catch (err) {
+    res.status(404).json({ status: "error", message: "User not found" });
     console.log(err);
   }
 });
