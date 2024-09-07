@@ -86,19 +86,21 @@ export default function ReviewSection() {
         })}
       </Slider>
       {!leaveReview && (
-        <button
-          className="btn"
-          style={{ width: "100%", marginTop: "2rem" }}
-          onClick={() => setLeaveReview(true)}
-        >
-          Leave a review
-        </button>
+        <div className="review__actionBtns">
+          <button
+            className="btn review__btn"
+            style={{ marginTop: "2rem" }}
+            onClick={() => setLeaveReview(true)}
+          >
+            Leave a review
+          </button>
+        </div>
       )}
       {leaveReview && (
         <>
           <form
             action=""
-            className="review__form"
+            className="review__form fadeIn"
             onSubmit={(e) => {
               e.preventDefault();
               createReview();
