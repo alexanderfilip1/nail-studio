@@ -1,5 +1,6 @@
 CREATE DATABASE nails;
 USE nails;
+
 CREATE TABLE category (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) UNIQUE NOT NULL
@@ -41,8 +42,6 @@ CREATE TABLE appointments (
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-DROP TABLE appointments;
-
 
 CREATE TABLE appointment_services (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -51,9 +50,6 @@ CREATE TABLE appointment_services (
     FOREIGN KEY (appointment_id) REFERENCES appointments(id),
     FOREIGN KEY (service_id) REFERENCES prices(id)
 );
-
-SELECT * FROM appointments;
-
 
 INSERT INTO category (name) VALUES
     ('manichiura'),
@@ -71,27 +67,11 @@ INSERT INTO prices (price, name, required_time, category_id) VALUES
 INSERT INTO prices (price, name, required_time, category_id) VALUES
     (145, 'Test', 30, 1);
     
-SELECT * FROM users;
-
-
-INSERT INTO appointments (name, phone, start_datetime, end_datetime) VALUES
-    ('Alexandru Filip', '066436464', '2024-08-21 13:30:00', '2024-08-21 15:30:00');
-
-
-SELECT * FROM appointments;
-
-DELETE FROM appointments WHERE id = 19;
-
-SELECT * FROM users;
-DELETE FROM appointments WHERE id > 0;
-DELETE FROM appointment_services WHERE id > 0;
-
 
 ALTER TABLE appointments
 ADD COLUMN total_price DECIMAL(10, 2) NOT NULL DEFAULT 0,
 ADD COLUMN cashback_used DECIMAL(10, 2) NOT NULL DEFAULT 0;
 
-DESCRIBE appointment_services;
 
 CREATE TABLE cashback_usage (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -103,9 +83,6 @@ CREATE TABLE cashback_usage (
   FOREIGN KEY (user_id) REFERENCES users(id),
   FOREIGN KEY (appointment_id) REFERENCES appointments(id)
 );
-
-
-SELECT * FROM appointments;
 
 CREATE TABLE reviews (
 	id INT AUTO_INCREMENT PRIMARY KEY,
@@ -119,8 +96,6 @@ CREATE TABLE gallery_images (
     link VARCHAR(255) NOT NULL,
     image_description VARCHAR(255) NOT NULL
 );
-
-SELECT * FROM gallery_images;
 
 DELETE FROM gallery_images WHERE id > 0;
 
